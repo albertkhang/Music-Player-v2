@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.albertkhang.musicplayerv2.R
+import com.albertkhang.musicplayerv2.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -15,9 +15,6 @@ import kotlinx.android.synthetic.main.activity_full_player.*
 
 class FullPlayerActivity : AppCompatActivity() {
     private var imgCoverBackground: ImageView? = null
-
-    private val url_cover =
-        "https://static.yeah1.com/uploads/editors/26/2019/11/21/1rDRXaIzn0IBFTphHKhABzyov6rOToLlwJOONJHg.jpeg"
 
     //    Top Icon
     private var flDownArrow: FrameLayout? = null
@@ -64,11 +61,11 @@ class FullPlayerActivity : AppCompatActivity() {
     }
 
     private fun addEvent() {
-        txtSongName?.setText("Có Như Không Có")
-        txtSingerName?.setText("Hiền Hồ, Đạt G")
+        txtSongName?.setText(fake_songName)
+        txtSingerName?.setText(fake_singerName)
 
-        setCover()
-        makeBlurCoverBackground()
+        setCover(fake_cover_url)
+        makeBlurCoverBackground(fake_cover_url)
 
         setOnClick()
     }
@@ -103,21 +100,21 @@ class FullPlayerActivity : AppCompatActivity() {
         })
     }
 
-    private fun setCover() {
+    private fun setCover(url: String) {
         Glide.with(this)
-            .load(url_cover)
+            .load(url)
             .error(R.color.colorIcon)
             .placeholder(R.color.colorIcon)
             .into(imgCover)
     }
 
-    private fun makeBlurCoverBackground() {
+    private fun makeBlurCoverBackground(url: String) {
         val radius = resources.getInteger(R.integer.dimenFullPlayerCoverBackgroundRadius)
         val sampling = resources.getInteger(R.integer.dimenFullPlayerCoverBackgroundSampling)
 
         imgCoverBackground?.let {
             Glide.with(this)
-                .load(url_cover)
+                .load(url)
                 .apply(RequestOptions.bitmapTransform(BlurTransformation(radius, sampling)))
                 .error(R.color.colorIcon)
                 .placeholder(R.color.colorIcon)
