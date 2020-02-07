@@ -118,8 +118,10 @@
         android:layout_marginRight="@dimen/dimenMiniPlayerForwardFrameMarginRight">
 
         <ImageView
+            android:id="@+id/imgFavorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:src="@drawable/ic_favorite_border"
             android:layout_gravity="center"/>
 

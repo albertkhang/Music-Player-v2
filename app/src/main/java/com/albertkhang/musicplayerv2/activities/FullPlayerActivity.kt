@@ -70,7 +70,7 @@ class FullPlayerActivity : AppCompatActivity() {
         txtSongName?.setText(intent.getStringExtra("songName"))
         txtSingerName?.setText(intent.getStringExtra("singerName"))
 
-        val cover_url=intent.getStringExtra("cover_url")
+        val cover_url = intent.getStringExtra("cover_url")
 
         setCover(cover_url)
         makeBlurCoverBackground(cover_url)

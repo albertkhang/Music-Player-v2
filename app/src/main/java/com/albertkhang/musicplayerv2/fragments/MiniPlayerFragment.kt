@@ -2,6 +2,7 @@ package com.albertkhang.musicplayerv2.fragments
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 
 import com.albertkhang.musicplayerv2.R
 import com.albertkhang.musicplayerv2.activities.FullPlayerActivity
@@ -64,6 +67,12 @@ class MiniPlayerFragment : Fragment() {
 
     private var imgCover: CircleImageView? = null
 
+    private var imgFavorite: ImageView? = null
+    private var isFavoriteClicked = false
+
+    private var mediaPlayer: MediaPlayer? = null
+    private var imgPlayPause: ImageView? = null
+
     private var txtSongName: TextView? = null
     private var txtSingerName: TextView? = null
 
@@ -77,19 +86,71 @@ class MiniPlayerFragment : Fragment() {
 
         imgCover = view?.findViewById(R.id.imgCover)
 
+        imgFavorite = view?.findViewById(R.id.imgFavorite)
+        imgPlayPause = view?.findViewById(R.id.imgPlayPause)
+
         txtSongName = view?.findViewById(R.id.txtSongName)
         txtSingerName = view?.findViewById(R.id.txtSingerName)
     }
 
     private fun addEvent() {
         flMiniPlayer?.setOnClickListener(View.OnClickListener {
-            val intent = Intent(view?.context, FullPlayerActivity::class.java)
-            intent.putExtra("songName", txtSongName?.text)
-            intent.putExtra("singerName", txtSingerName?.text)
-            intent.putExtra("cover_url", fake_cover_url)
-
-            startActivity(intent)
+            openFullPlayerActivity()
         })
+
+        flFavorite.setOnClickListener(View.OnClickListener {
+            changeFavoriteIcon()
+        })
+
+        imgPlayPause?.setOnClickListener(View.OnClickListener {
+            if (mediaPlayer != null) {
+                changeMusicStatus()
+                changePlayPauseIcon()
+            } else {
+                Toast.makeText(view?.context, "Please select a song!", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun setSongToMediaPlayer() {
+        mediaPlayer = MediaPlayer.create(view?.context, R.raw.co_nhu_khong_co_34s)
+    }
+
+    private fun changeMusicStatus() {
+        if (mediaPlayer?.isPlaying == false) {
+            mediaPlayer?.start()
+        } else {
+            mediaPlayer?.pause()
+        }
+        changePlayPauseIcon()
+    }
+
+    private fun changePlayPauseIcon() {
+        if (mediaPlayer?.isPlaying == true) {
+            imgPlayPause?.setImageResource(R.drawable.ic_pause)
+        } else {
+            imgPlayPause?.setImageResource(R.drawable.ic_play)
+        }
+    }
+
+    private fun changeFavoriteIcon() {
+        if (!isFavoriteClicked) {
+            //change into clicked icon
+            imgFavorite?.setImageResource(R.drawable.ic_favorite)
+            isFavoriteClicked = true
+        } else {
+            imgFavorite?.setImageResource(R.drawable.ic_favorite_border)
+            isFavoriteClicked = false
+        }
+    }
+
+    private fun openFullPlayerActivity() {
+        val intent = Intent(view?.context, FullPlayerActivity::class.java)
+        intent.putExtra("songName", txtSongName?.text)
+        intent.putExtra("singerName", txtSingerName?.text)
+        intent.putExtra("cover_url", fake_cover_url)
+
+        startActivity(intent)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -104,6 +165,8 @@ class MiniPlayerFragment : Fragment() {
                         .load(fake_cover_url)
                         .into(it)
                 }
+
+                setSongToMediaPlayer()
             }
         }
     }
