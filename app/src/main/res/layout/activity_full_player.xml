@@ -7,40 +7,13 @@
     tools:context=".activities.FullPlayerActivity"
     android:background="@drawable/main_gradient_background">
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/clFullPlayerActivity"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent">-->
+    <ImageView
+        android:id="@+id/imgCoverBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-<!--        <ImageView-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-
-<!--            app:layout_constraintDimensionRatio="1:1"-->
-<!--            android:src="@drawable/cover_test"-->
-
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintRight_toRightOf="parent"/>-->
-
-<!--        <ImageView-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-
-<!--            app:layout_constraintDimensionRatio="1:1"-->
-<!--            android:src="#000"-->
-<!--            android:alpha=".7"-->
-
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintRight_toRightOf="parent"/>-->
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+        android:scaleType="centerCrop"
+        android:alpha=".1"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgCover"
