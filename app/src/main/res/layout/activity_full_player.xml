@@ -13,14 +13,14 @@
         android:layout_height="match_parent"
 
         android:scaleType="centerCrop"
-        android:alpha=".1"/>
+        android:alpha=".15"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgCover"
         android:layout_width="@dimen/dimenFullPlayerCover"
         android:layout_height="@dimen/dimenFullPlayerCover"
 
-        android:src="@drawable/cover_test"
+        android:src="@color/colorIcon"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
