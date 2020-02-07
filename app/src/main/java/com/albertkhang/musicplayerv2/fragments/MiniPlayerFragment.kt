@@ -1,15 +1,28 @@
 package com.albertkhang.musicplayerv2.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.TextView
 
 import com.albertkhang.musicplayerv2.R
+import com.albertkhang.musicplayerv2.activities.FullPlayerActivity
+import com.albertkhang.musicplayerv2.fake_cover_url
+import com.albertkhang.musicplayerv2.fake_singerName
+import com.albertkhang.musicplayerv2.fake_songName
+import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.fragment_mini_player.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,8 +60,62 @@ class MiniPlayerFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_mini_player, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    private var flMiniPlayer: FrameLayout? = null
 
+    private var imgCover: CircleImageView? = null
+
+    private var txtSongName: TextView? = null
+    private var txtSingerName: TextView? = null
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        addControl()
+        addEvent()
+    }
+
+    private fun addControl() {
+        flMiniPlayer = view?.findViewById(R.id.flMiniPlayer)
+
+        imgCover = view?.findViewById(R.id.imgCover)
+
+        txtSongName = view?.findViewById(R.id.txtSongName)
+        txtSingerName = view?.findViewById(R.id.txtSingerName)
+    }
+
+    private fun addEvent() {
+        flMiniPlayer?.setOnClickListener(View.OnClickListener {
+            val intent = Intent(view?.context, FullPlayerActivity::class.java)
+            intent.putExtra("songName", txtSongName?.text)
+            intent.putExtra("singerName", txtSingerName?.text)
+            intent.putExtra("cover_url", fake_cover_url)
+
+            startActivity(intent)
+        })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(str: String) {
+        when (str) {
+            "changeText" -> {
+                txtSongName?.setText(fake_songName)
+                txtSingerName?.setText(fake_singerName)
+
+                imgCover?.let {
+                    Glide.with(this)
+                        .load(fake_cover_url)
+                        .into(it)
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -8,7 +8,7 @@
     android:background="@color/colorMiniPlayerBackground">
 
     <FrameLayout
-        android:id="@+id/flMiniPlayerFragment"
+        android:id="@+id/flMiniPlayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 

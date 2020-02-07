@@ -1,5 +1,8 @@
 package com.albertkhang.musicplayerv2.activities
 
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -7,11 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.albertkhang.musicplayerv2.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_full_player.*
+import java.util.jar.Manifest
 
 class FullPlayerActivity : AppCompatActivity() {
     private var imgCoverBackground: ImageView? = null
@@ -61,18 +67,20 @@ class FullPlayerActivity : AppCompatActivity() {
     }
 
     private fun addEvent() {
-        txtSongName?.setText(fake_songName)
-        txtSingerName?.setText(fake_singerName)
+        txtSongName?.setText(intent.getStringExtra("songName"))
+        txtSingerName?.setText(intent.getStringExtra("singerName"))
 
-        setCover(fake_cover_url)
-        makeBlurCoverBackground(fake_cover_url)
+        val cover_url=intent.getStringExtra("cover_url")
+
+        setCover(cover_url)
+        makeBlurCoverBackground(cover_url)
 
         setOnClick()
     }
 
     private fun setOnClick() {
         flDownArrow?.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Down Arrow", Toast.LENGTH_SHORT).show()
+            finish()
         })
 
         flQueueMusic?.setOnClickListener(View.OnClickListener {
