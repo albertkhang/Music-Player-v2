@@ -5,7 +5,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import android.widget.Toast
 
 import com.albertkhang.musicplayerv2.R
 import com.albertkhang.musicplayerv2.activities.FullPlayerActivity
+import com.albertkhang.musicplayerv2.animations.RotationView
 import com.albertkhang.musicplayerv2.fake_cover_url
 import com.albertkhang.musicplayerv2.fake_singerName
 import com.albertkhang.musicplayerv2.fake_songName
@@ -27,7 +27,6 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -41,7 +40,6 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MiniPlayerFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -72,6 +70,7 @@ class MiniPlayerFragment : Fragment() {
 
     private var mediaPlayer: MediaPlayer? = null
     private var imgPlayPause: ImageView? = null
+    private var rotateView: RotationView? = null
 
     private var txtSongName: TextView? = null
     private var txtSingerName: TextView? = null
@@ -88,6 +87,8 @@ class MiniPlayerFragment : Fragment() {
 
         imgFavorite = view?.findViewById(R.id.imgFavorite)
         imgPlayPause = view?.findViewById(R.id.imgPlayPause)
+        rotateView = RotationView()
+        rotateView?.view = imgCover
 
         txtSongName = view?.findViewById(R.id.txtSongName)
         txtSingerName = view?.findViewById(R.id.txtSingerName)
@@ -103,16 +104,30 @@ class MiniPlayerFragment : Fragment() {
         })
 
         imgPlayPause?.setOnClickListener(View.OnClickListener {
+            // TODO: bấm play music nhiều lần thì sẽ phát trùng nhau
             if (mediaPlayer != null) {
                 changeMusicStatus()
                 changePlayPauseIcon()
+                changeCoverStatus()
             } else {
                 Toast.makeText(view?.context, "Please select a song!", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    private fun setSongToMediaPlayer() {
+    private fun changeCoverStatus() {
+        if (mediaPlayer?.isPlaying == true) {
+            if (rotateView?.isNull() == true) {
+                rotateView?.start()
+            } else {
+                rotateView?.resume()
+            }
+        } else {
+            rotateView?.pause()
+        }
+    }
+
+    private fun bindSongToMediaPlayer() {
         mediaPlayer = MediaPlayer.create(view?.context, R.raw.co_nhu_khong_co_34s)
     }
 
@@ -122,7 +137,6 @@ class MiniPlayerFragment : Fragment() {
         } else {
             mediaPlayer?.pause()
         }
-        changePlayPauseIcon()
     }
 
     private fun changePlayPauseIcon() {
@@ -166,7 +180,7 @@ class MiniPlayerFragment : Fragment() {
                         .into(it)
                 }
 
-                setSongToMediaPlayer()
+                bindSongToMediaPlayer()
             }
         }
     }
@@ -181,7 +195,6 @@ class MiniPlayerFragment : Fragment() {
         super.onStop()
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
@@ -212,7 +225,6 @@ class MiniPlayerFragment : Fragment() {
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
@@ -225,7 +237,6 @@ class MiniPlayerFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment MiniPlayerFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             MiniPlayerFragment().apply {

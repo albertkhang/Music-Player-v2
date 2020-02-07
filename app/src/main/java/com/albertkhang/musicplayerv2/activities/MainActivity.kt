@@ -46,6 +46,5 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
     }
 
     override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
