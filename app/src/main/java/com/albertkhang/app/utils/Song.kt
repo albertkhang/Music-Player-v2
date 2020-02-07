@@ -1,4 +1,4 @@
-package com.albertkhang.musicplayerv2.utils
+package com.albertkhang.app.utils
 
 data class Song(
     var songName: String?,

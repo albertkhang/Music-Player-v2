@@ -1,4 +1,4 @@
-package com.albertkhang.musicplayerv2
+package com.albertkhang.app
 
 import org.junit.Test
 

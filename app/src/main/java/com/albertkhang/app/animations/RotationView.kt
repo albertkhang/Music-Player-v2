@@ -1,11 +1,10 @@
-package com.albertkhang.musicplayerv2.animations
+package com.albertkhang.app.animations
 
 import android.animation.ObjectAnimator
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
 
 
 class RotationView {

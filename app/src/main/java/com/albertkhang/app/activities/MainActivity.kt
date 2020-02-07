@@ -1,17 +1,16 @@
-package com.albertkhang.musicplayerv2.activities
+package com.albertkhang.app.activities
 
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.FrameLayout
-import com.albertkhang.musicplayerv2.fragments.MiniPlayerFragment
-import com.albertkhang.musicplayerv2.R
-import com.albertkhang.musicplayerv2.fake_cover_url
-import com.albertkhang.musicplayerv2.fake_singerName
-import com.albertkhang.musicplayerv2.fake_songName
-import com.albertkhang.musicplayerv2.utils.Song
+import com.albertkhang.app.fragments.MiniPlayerFragment
+import com.albertkhang.app.R
+import com.albertkhang.app.fake_cover_url
+import com.albertkhang.app.fake_singerName
+import com.albertkhang.app.fake_songName
+import com.albertkhang.app.utils.Song
 import org.greenrobot.eventbus.EventBus
 
 class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteractionListener {

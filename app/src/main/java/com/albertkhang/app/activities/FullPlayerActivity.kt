@@ -1,8 +1,5 @@
-package com.albertkhang.musicplayerv2.activities
+package com.albertkhang.app.activities
 
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -10,18 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.albertkhang.musicplayerv2.*
-import com.albertkhang.musicplayerv2.utils.Song
+import com.albertkhang.app.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_full_player.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
-import java.util.jar.Manifest
 
 class FullPlayerActivity : AppCompatActivity() {
     private var imgCoverBackground: ImageView? = null

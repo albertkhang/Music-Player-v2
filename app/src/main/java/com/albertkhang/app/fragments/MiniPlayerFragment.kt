@@ -1,4 +1,4 @@
-package com.albertkhang.musicplayerv2.fragments
+package com.albertkhang.app.fragments
 
 import android.content.Context
 import android.content.Intent
@@ -15,10 +15,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 
-import com.albertkhang.musicplayerv2.R
-import com.albertkhang.musicplayerv2.activities.FullPlayerActivity
-import com.albertkhang.musicplayerv2.animations.RotationView
-import com.albertkhang.musicplayerv2.utils.Song
+import com.albertkhang.app.R
+import com.albertkhang.app.activities.FullPlayerActivity
+import com.albertkhang.app.animations.RotationView
+import com.albertkhang.app.utils.Song
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_mini_player.*
