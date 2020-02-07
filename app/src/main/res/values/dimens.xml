@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--MiniPlayer-->
+    <dimen name="dimenMiniPlayerFragmentHeight">60dp</dimen>
+
+    <!--    Cover-->
+    <dimen name="dimenMiniPlayerCover">40dp</dimen>
+    <dimen name="dimenMiniPlayerCoverMarginLeft">16dp</dimen>
+
+    <!--    Song and Singer-->
+    <dimen name="dimenMiniPlayerSongNameSize">16sp</dimen>
+    <dimen name="dimenMiniPlayerSingerNameSize">12sp</dimen>
+
+    <dimen name="dimenMiniPlayerFrameSongSingerMarginLeft">16dp</dimen>
+    <dimen name="dimenMiniPlayerFrameSongSingerMarginRight">16dp</dimen>
+
+    <!--    Player Button-->
+    <dimen name="dimenMiniPlayerButtonFrameSize">48dp</dimen>
+    <dimen name="dimenMiniPlayerForwardFrameMarginRight">0dp</dimen>
+
+    <!--    FullPlayer-->
+
+    <!--    Cover-->
+    <dimen name="dimenFullPlayerCover">215dp</dimen>
+    <dimen name="dimenFullPlayerCoverMarginTop">98dp</dimen>
+
+    <!--    Song and Singer-->
+    <dimen name="dimenFullPlayerSongNameSize">26sp</dimen>
+    <dimen name="dimenFullPlayerSingerNameSize">16sp</dimen>
+    <dimen name="dimenFullPlayerFrameSongSingerMarginTop">46dp</dimen>
+
+    <!--    Top Icon-->
+    <dimen name="dimenFullPlayerIconTopMarginTop">50dp</dimen>
+    <dimen name="dimenFullPlayerIconTopMarginLeftRight">12dp</dimen>
+
+    <!--    Bottom Icon-->
+    <dimen name="dimenFullPlayerIconPlaybackSize">66dp</dimen>
+    <dimen name="dimenFullPlayerIconMarginBottom">68dp</dimen>
+    <dimen name="dimenFullPlayerIconRewindForwardSize">36dp</dimen>
+    <dimen name="dimenFullPlayerIconSmallSize">24dp</dimen>
+
+    <!--    SeekBar-->
+    <dimen name="dimenFullPlayerSeekBarSize">300dp</dimen>
+    <dimen name="dimenFullPlayerSeekBarMarginBottom">45dp</dimen>
+    <dimen name="dimenFullPlayerTimestampSize">10sp</dimen>
+    <dimen name="dimenFullPlayerTimestampMargin">16dp</dimen>
+</resources>

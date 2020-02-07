@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Music Player v2</string>
+
+    <string name="stringSongName">Song Name</string>
+    <string name="stringSingerName">Singer Name</string>
+
+    <string name="stringStartTimestamp">00:00</string>
+    <string name="stringEndTimestamp">04:52</string>
+</resources>
