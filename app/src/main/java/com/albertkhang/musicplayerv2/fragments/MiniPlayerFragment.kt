@@ -5,6 +5,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +18,6 @@ import android.widget.Toast
 import com.albertkhang.musicplayerv2.R
 import com.albertkhang.musicplayerv2.activities.FullPlayerActivity
 import com.albertkhang.musicplayerv2.animations.RotationView
-import com.albertkhang.musicplayerv2.fake_cover_url
-import com.albertkhang.musicplayerv2.fake_singerName
-import com.albertkhang.musicplayerv2.fake_songName
 import com.albertkhang.musicplayerv2.utils.Song
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
@@ -136,6 +134,15 @@ class MiniPlayerFragment : Fragment() {
         mediaPlayer = MediaPlayer.create(view?.context, R.raw.co_nhu_khong_co_34s)
     }
 
+    private fun setCompletionMediaPlayerListener() {
+        mediaPlayer?.setOnCompletionListener {
+            imgPlayPause?.setImageResource(R.drawable.ic_play)
+            rotateView?.pause()
+
+            Log.d("_mediaPlayer", "setOnCompletionListener")
+        }
+    }
+
     private fun changeMusicStatus() {
         if (mediaPlayer?.isPlaying == false) {
             mediaPlayer?.start()
@@ -188,6 +195,7 @@ class MiniPlayerFragment : Fragment() {
                 }
 
                 bindSongToMediaPlayer()
+                setCompletionMediaPlayerListener()
             }
         }
     }
