@@ -20,6 +20,7 @@ import com.albertkhang.musicplayerv2.animations.RotationView
 import com.albertkhang.musicplayerv2.fake_cover_url
 import com.albertkhang.musicplayerv2.fake_singerName
 import com.albertkhang.musicplayerv2.fake_songName
+import com.albertkhang.musicplayerv2.utils.Song
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_mini_player.*
@@ -75,6 +76,8 @@ class MiniPlayerFragment : Fragment() {
     private var txtSongName: TextView? = null
     private var txtSingerName: TextView? = null
 
+    private var currentSong: Song? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         addControl()
         addEvent()
@@ -96,7 +99,9 @@ class MiniPlayerFragment : Fragment() {
 
     private fun addEvent() {
         flMiniPlayer?.setOnClickListener(View.OnClickListener {
-            openFullPlayerActivity()
+            if (currentSong != null) {
+                openFullPlayerActivity()
+            }
         })
 
         flFavorite.setOnClickListener(View.OnClickListener {
@@ -160,23 +165,25 @@ class MiniPlayerFragment : Fragment() {
 
     private fun openFullPlayerActivity() {
         val intent = Intent(view?.context, FullPlayerActivity::class.java)
-        intent.putExtra("songName", txtSongName?.text)
-        intent.putExtra("singerName", txtSingerName?.text)
-        intent.putExtra("cover_url", fake_cover_url)
+        intent.putExtra("songName", currentSong?.songName)
+        intent.putExtra("singerName", currentSong?.singerName)
+        intent.putExtra("cover_url", currentSong?.cover_url)
 
         startActivity(intent)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(str: String) {
-        when (str) {
-            "changeText" -> {
-                txtSongName?.setText(fake_songName)
-                txtSingerName?.setText(fake_singerName)
+    fun onEvent(data: Any) {
+        when (data) {
+            is Song -> {
+                currentSong = data.copy()
+
+                txtSongName?.setText(data.songName)
+                txtSingerName?.setText(data.singerName)
 
                 imgCover?.let {
                     Glide.with(this)
-                        .load(fake_cover_url)
+                        .load(data.cover_url)
                         .into(it)
                 }
 

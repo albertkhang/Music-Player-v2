@@ -8,8 +8,10 @@ import android.widget.Button
 import android.widget.FrameLayout
 import com.albertkhang.musicplayerv2.fragments.MiniPlayerFragment
 import com.albertkhang.musicplayerv2.R
+import com.albertkhang.musicplayerv2.fake_cover_url
 import com.albertkhang.musicplayerv2.fake_singerName
 import com.albertkhang.musicplayerv2.fake_songName
+import com.albertkhang.musicplayerv2.utils.Song
 import org.greenrobot.eventbus.EventBus
 
 class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteractionListener {
@@ -35,7 +37,8 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
         addMiniPlayer()
 
         btnPlayMusic?.setOnClickListener(View.OnClickListener {
-            EventBus.getDefault().post("changeText")
+            var data = Song(fake_songName, fake_singerName, fake_cover_url,null)
+            EventBus.getDefault().post(data)
         })
     }
 

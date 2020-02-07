@@ -13,10 +13,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.albertkhang.musicplayerv2.*
+import com.albertkhang.musicplayerv2.utils.Song
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_full_player.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.jar.Manifest
 
 class FullPlayerActivity : AppCompatActivity() {
@@ -67,6 +71,11 @@ class FullPlayerActivity : AppCompatActivity() {
     }
 
     private fun addEvent() {
+        getIntentData()
+        setOnClick()
+    }
+
+    private fun getIntentData() {
         txtSongName?.setText(intent.getStringExtra("songName"))
         txtSingerName?.setText(intent.getStringExtra("singerName"))
 
@@ -74,8 +83,6 @@ class FullPlayerActivity : AppCompatActivity() {
 
         setCover(cover_url)
         makeBlurCoverBackground(cover_url)
-
-        setOnClick()
     }
 
     private fun setOnClick() {
