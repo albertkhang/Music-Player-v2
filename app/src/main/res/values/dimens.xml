@@ -40,7 +40,6 @@
     <dimen name="dimenFullPlayerIconSmallSize">24dp</dimen>
 
     <!--    SeekBar-->
-    <dimen name="dimenFullPlayerSeekBarSize">300dp</dimen>
     <dimen name="dimenFullPlayerSeekBarMarginBottom">45dp</dimen>
     <dimen name="dimenFullPlayerTimestampSize">10sp</dimen>
     <dimen name="dimenFullPlayerTimestampMargin">16dp</dimen>

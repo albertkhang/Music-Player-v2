@@ -204,16 +204,18 @@
 
     <SeekBar
         android:id="@+id/sbSeekBar"
-        android:layout_width="@dimen/dimenFullPlayerSeekBarSize"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/llPlaybackFrame"
+        app:layout_constraintRight_toRightOf="@id/llPlaybackFrame"
         app:layout_constraintBottom_toTopOf="@id/llPlaybackFrame"
 
         android:layout_marginBottom="@dimen/dimenFullPlayerSeekBarMarginBottom"
         android:progress="40"
         android:max="100"
+
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
 
         android:thumbTint="@color/colorLightSeekBar"
         android:progressBackgroundTint="@color/colorDarkSeekBar"
