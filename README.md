@@ -1,4 +1,5 @@
-# Music Player v2
+# ![Image](https://github.com/albertkhang/Music-Player-v2/blob/develop/app/src/main/res/drawable/ic_music_layer_v2.png) Music Player v2
+
 ## Resources
 > All resources are used to study Android and are not for commercial use.
 
