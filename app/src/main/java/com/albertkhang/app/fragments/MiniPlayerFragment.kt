@@ -26,18 +26,9 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [MiniPlayerFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [MiniPlayerFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MiniPlayerFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
@@ -56,7 +47,6 @@ class MiniPlayerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_mini_player, container, false)
     }
 
@@ -107,26 +97,52 @@ class MiniPlayerFragment : Fragment() {
         })
 
         imgPlayPause?.setOnClickListener(View.OnClickListener {
-            // TODO: bấm play music nhiều lần thì sẽ phát trùng nhau
             if (mediaPlayer != null) {
                 changeMusicStatus()
-                changePlayPauseIcon()
                 changeCoverStatus()
+                changePlayPauseIcon()
             } else {
                 Toast.makeText(view?.context, "Please select a song!", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
+    private fun getDefaultRotateCover() {
+        rotateView?.getDefault()
+    }
+
+    private fun resetDefaultRotateCover() {
+        rotateView?.resetAnimator()
+    }
+
     private fun changeCoverStatus() {
         if (mediaPlayer?.isPlaying == true) {
             if (rotateView?.isNull() == true) {
-                rotateView?.start()
+                getDefaultRotateCover()
+                startRotateCover()
             } else {
-                rotateView?.resume()
+                resumeRotateCover()
             }
         } else {
-            rotateView?.pause()
+            pauseRotateCover()
+        }
+    }
+
+    private fun startRotateCover() {
+        rotateView?.start()
+    }
+
+    private fun resumeRotateCover() {
+        rotateView?.resume()
+    }
+
+    private fun pauseRotateCover() {
+        rotateView?.pause()
+    }
+
+    private fun endRotateCover() {
+        if (rotateView != null) {
+            rotateView?.end()
         }
     }
 
@@ -194,6 +210,14 @@ class MiniPlayerFragment : Fragment() {
                         .into(it)
                 }
 
+                if (mediaPlayer != null) {
+                    mediaPlayer?.stop()
+                    mediaPlayer = null
+                    endRotateCover()
+                    changePlayPauseIcon()
+                    resetDefaultRotateCover()
+                }
+
                 bindSongToMediaPlayer()
                 setCompletionMediaPlayerListener()
             }
@@ -228,30 +252,11 @@ class MiniPlayerFragment : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MiniPlayerFragment.
-         */
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             MiniPlayerFragment().apply {

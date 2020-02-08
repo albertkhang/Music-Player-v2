@@ -12,21 +12,32 @@ class RotationView {
     private var duration: Long = 20000
     private var rotateAnimation: ObjectAnimator? = null
 
-    fun start() {
+    fun getDefault() {
         if (view != null) {
-            Log.d("RotationView", "startRotationView")
-
+            Log.d("RotationView", "getDefault()RotationView")
             rotateAnimation = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 360f)
             rotateAnimation?.interpolator = LinearInterpolator()
             rotateAnimation?.repeatCount = Animation.INFINITE
             rotateAnimation?.duration = duration
+        }
+    }
 
+    fun resetAnimator() {
+        rotateAnimation = null
+    }
+
+    fun start() {
+        if (view != null) {
+            Log.d("RotationView", "startRotationView")
             rotateAnimation?.start()
         }
     }
 
     fun resume() {
-        rotateAnimation?.resume()
+        if (rotateAnimation != null) {
+            Log.d("RotationView", "resumeRotationView")
+            rotateAnimation?.resume()
+        }
     }
 
     fun pause() {
@@ -36,8 +47,16 @@ class RotationView {
         }
     }
 
+    fun end() {
+        if (rotateAnimation != null) {
+            Log.d("RotationView", "endRotationView")
+            rotateAnimation?.end()
+        }
+    }
+
     fun isNull(): Boolean {
         if (rotateAnimation == null) {
+            Log.d("RotationView", "isNull()RotationView")
             return true
         }
         return false
