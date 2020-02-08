@@ -1,6 +1,6 @@
 # Music Player v2
 ## Resources
-> All resources are used to study Android research and are not for commercial use.
+> All resources are used to study Android and are not for commercial use.
 
 **Logo**: [Janice S](https://www.behance.net/gallery/47086193/App-Icon-Logo-Music-Player)
 
