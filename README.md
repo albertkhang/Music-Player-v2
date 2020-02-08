@@ -11,4 +11,4 @@
 
 **Full Player UI**: [Zing Mp3](https://play.google.com/store/apps/details?id=com.zing.mp3&hl=en), [UI8.net](https://www.behance.net/gallery/49533915/Music-Mobile-UI-Kit)
 
-**Icon**: [preepik](https://www.freepik.com/free-vector/red-logo-play_1050323.htm#page=1&query=music%20player%20logo&position=2)
+**Icon**: [Preepik](https://www.freepik.com/free-vector/red-logo-play_1050323.htm#page=1&query=music%20player%20logo&position=2)
