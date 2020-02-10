@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.FrameLayout
 import com.albertkhang.app.fragments.MiniPlayerFragment
 import com.albertkhang.app.R
 import com.albertkhang.app.fake_cover_url
@@ -37,12 +38,16 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
         addMiniPlayer()
 
         btnPlayMusic?.setOnClickListener(View.OnClickListener {
-            val data = Song()
-            data.songName = fake_songName
-            data.singerName = fake_singerName
-            data.cover_url = fake_cover_url
-            EventBus.getDefault().post(data)
+            addFakeSong()
         })
+    }
+
+    private fun addFakeSong() {
+        val data = Song()
+        data.songName = fake_songName
+        data.singerName = fake_singerName
+        data.cover_url = fake_cover_url
+        EventBus.getDefault().post(data)
     }
 
     private fun addMiniPlayer() {
