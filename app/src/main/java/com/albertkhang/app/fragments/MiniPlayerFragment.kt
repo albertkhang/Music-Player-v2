@@ -73,18 +73,12 @@ class MiniPlayerFragment : Fragment() {
     private var imgFavorite: ImageView? = null
     private var isFavoriteClicked = false
 
-    //    private var mediaPlayer: MediaPlayer? = null
     private var imgPlayPause: ImageView? = null
-//    private var rotateView: RotationView? = null
 
     private var txtSongName: TextView? = null
     private var txtSingerName: TextView? = null
 
     private var currentSong: Song? = null
-
-//    private val ROTATION_COVER_STATUS_REQUEST_CODE = 0
-
-    // TODO: bug khi chạy ở mini mở full player rồi tắt thì lại bị giật
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         addControl()
@@ -236,7 +230,6 @@ class MiniPlayerFragment : Fragment() {
     private fun updateUIStatusWhenBack() {
         changePlayPauseIcon()
         changeCoverStatus()
-        // TODO: cập nhật vị trí khi start nhạc từ full player
     }
 
     override fun onStop() {
