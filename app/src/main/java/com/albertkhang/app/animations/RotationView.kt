@@ -12,6 +12,7 @@ class RotationView {
     var view: View? = null
     private var duration: Long = 20000
     private var rotateAnimation: ObjectAnimator? = null
+    var fractionValue: Float? = null
 
     fun getDefault() {
         if (view != null) {
@@ -31,9 +32,11 @@ class RotationView {
         return rotateAnimation?.animatedFraction
     }
 
-    fun setAnimatedFraction(float: Float) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            rotateAnimation?.setCurrentFraction(float)
+    fun setAnimatedFraction(float: Float?) {
+        if (float != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                rotateAnimation?.setCurrentFraction(float)
+            }
         }
     }
 

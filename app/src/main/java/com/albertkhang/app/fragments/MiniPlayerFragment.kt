@@ -54,6 +54,7 @@ class MiniPlayerFragment : Fragment() {
     companion object {
         var mediaPlayer: MediaPlayer? = null
         var rotationView: RotationView? = null
+        var fractionValue: Float? = null
 
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
@@ -81,7 +82,9 @@ class MiniPlayerFragment : Fragment() {
 
     private var currentSong: Song? = null
 
-    private val ROTATION_COVER_STATUS_REQUEST_CODE = 0
+//    private val ROTATION_COVER_STATUS_REQUEST_CODE = 0
+
+    // TODO: bug khi chạy ở mini mở full player rồi tắt thì lại bị giật
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         addControl()
@@ -190,23 +193,9 @@ class MiniPlayerFragment : Fragment() {
         intent.putExtra("singerName", currentSong?.singerName)
         intent.putExtra("cover_url", currentSong?.cover_url)
 
-        startActivityForResult(intent, ROTATION_COVER_STATUS_REQUEST_CODE)
-    }
+        fractionValue= rotationView?.getAnimatedFraction()
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            ROTATION_COVER_STATUS_REQUEST_CODE -> {
-                Log.d("_onActivityResult", "ROTATION_COVER_STATUS_REQUEST_CODE")
-                if (resultCode == Activity.RESULT_OK) {
-                    Log.d("_onActivityResult", "RESULT_OK")
-                    if (data != null) {
-                        rotationView?.setAnimatedFraction(data.getFloatExtra("fraction_value", 0f))
-                    }
-                }
-            }
-        }
+        startActivity(intent)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

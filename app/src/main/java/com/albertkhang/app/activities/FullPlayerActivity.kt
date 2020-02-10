@@ -85,21 +85,9 @@ class FullPlayerActivity : AppCompatActivity() {
         changePlayPauseIcon()
     }
 
-    private fun returnIntent() {
-        val resultIntent = Intent()
-        resultIntent.putExtra("fraction_value", rotationView?.getAnimatedFraction())
-        setResult(Activity.RESULT_OK, resultIntent)
-        finish()
-    }
-
     override fun onStop() {
-        returnIntent()
+        MiniPlayerFragment.fractionValue = rotationView?.getAnimatedFraction()
         super.onStop()
-    }
-
-    override fun onBackPressed() {
-        returnIntent()
-        super.onBackPressed()
     }
 
     private fun changeMusicStatus() {
@@ -120,7 +108,8 @@ class FullPlayerActivity : AppCompatActivity() {
 
     private fun updateRotationStatus() {
         rotationView?.getDefault()
-        rotationView?.setAnimatedFraction(MiniPlayerFragment.rotationView?.getAnimatedFraction()!!)
+//        rotationView?.setAnimatedFraction(MiniPlayerFragment.rotationView?.getAnimatedFraction()!!)
+        rotationView?.setAnimatedFraction(MiniPlayerFragment.fractionValue)
         rotationView?.start()
         rotationView?.pause()
     }
@@ -152,7 +141,7 @@ class FullPlayerActivity : AppCompatActivity() {
 
     private fun setOnClick() {
         flDownArrow?.setOnClickListener(View.OnClickListener {
-            returnIntent()
+            finish()
         })
 
         flQueueMusic?.setOnClickListener(View.OnClickListener {
