@@ -50,6 +50,20 @@ class MiniPlayerFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_mini_player, container, false)
     }
 
+    companion object {
+        var mediaPlayer: MediaPlayer? = null
+        var rotationView: RotationView? = null
+
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            MiniPlayerFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
+    }
+
     private var flMiniPlayer: FrameLayout? = null
 
     private var imgCover: CircleImageView? = null
@@ -57,9 +71,9 @@ class MiniPlayerFragment : Fragment() {
     private var imgFavorite: ImageView? = null
     private var isFavoriteClicked = false
 
-    private var mediaPlayer: MediaPlayer? = null
+//    private var mediaPlayer: MediaPlayer? = null
     private var imgPlayPause: ImageView? = null
-    private var rotateView: RotationView? = null
+//    private var rotateView: RotationView? = null
 
     private var txtSongName: TextView? = null
     private var txtSingerName: TextView? = null
@@ -78,8 +92,8 @@ class MiniPlayerFragment : Fragment() {
 
         imgFavorite = view?.findViewById(R.id.imgFavorite)
         imgPlayPause = view?.findViewById(R.id.imgPlayPause)
-        rotateView = RotationView()
-        rotateView?.view = imgCover
+        rotationView = RotationView()
+        rotationView?.view = imgCover
 
         txtSongName = view?.findViewById(R.id.txtSongName)
         txtSingerName = view?.findViewById(R.id.txtSingerName)
@@ -108,41 +122,23 @@ class MiniPlayerFragment : Fragment() {
     }
 
     private fun getDefaultRotateCover() {
-        rotateView?.getDefault()
+        rotationView?.getDefault()
     }
 
     private fun resetDefaultRotateCover() {
-        rotateView?.resetAnimator()
+        rotationView?.resetAnimator()
     }
 
     private fun changeCoverStatus() {
         if (mediaPlayer?.isPlaying == true) {
-            if (rotateView?.isNull() == true) {
+            if (rotationView?.isNull() == true) {
                 getDefaultRotateCover()
-                startRotateCover()
+                rotationView?.start()
             } else {
-                resumeRotateCover()
+                rotationView?.resume()
             }
         } else {
-            pauseRotateCover()
-        }
-    }
-
-    private fun startRotateCover() {
-        rotateView?.start()
-    }
-
-    private fun resumeRotateCover() {
-        rotateView?.resume()
-    }
-
-    private fun pauseRotateCover() {
-        rotateView?.pause()
-    }
-
-    private fun endRotateCover() {
-        if (rotateView != null) {
-            rotateView?.end()
+            rotationView?.pause()
         }
     }
 
@@ -153,7 +149,7 @@ class MiniPlayerFragment : Fragment() {
     private fun setCompletionMediaPlayerListener() {
         mediaPlayer?.setOnCompletionListener {
             imgPlayPause?.setImageResource(R.drawable.ic_play)
-            rotateView?.pause()
+            rotationView?.pause()
 
             Log.d("_mediaPlayer", "setOnCompletionListener")
         }
@@ -213,7 +209,7 @@ class MiniPlayerFragment : Fragment() {
                 if (mediaPlayer != null) {
                     mediaPlayer?.stop()
                     mediaPlayer = null
-                    endRotateCover()
+                    rotationView?.end()
                     changePlayPauseIcon()
                     resetDefaultRotateCover()
                 }
@@ -227,6 +223,12 @@ class MiniPlayerFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
+        updateUIStatus()
+    }
+
+    private fun updateUIStatus() {
+        changePlayPauseIcon()
+        changeCoverStatus()
     }
 
     override fun onStop() {
@@ -254,16 +256,5 @@ class MiniPlayerFragment : Fragment() {
 
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MiniPlayerFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

@@ -1,6 +1,7 @@
 package com.albertkhang.app.animations
 
 import android.animation.ObjectAnimator
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
@@ -24,6 +25,16 @@ class RotationView {
 
     fun resetAnimator() {
         rotateAnimation = null
+    }
+
+    fun getAnimatedFraction(): Float? {
+        return rotateAnimation?.animatedFraction
+    }
+
+    fun setAnimatedFraction(float: Float) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            rotateAnimation?.setCurrentFraction(float)
+        }
     }
 
     fun start() {

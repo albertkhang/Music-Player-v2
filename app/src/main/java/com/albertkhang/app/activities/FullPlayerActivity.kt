@@ -1,5 +1,6 @@
 package com.albertkhang.app.activities
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -8,10 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.albertkhang.app.*
+import com.albertkhang.app.animations.RotationView
+import com.albertkhang.app.fragments.MiniPlayerFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
-import kotlinx.android.synthetic.main.activity_full_player.*
+import kotlinx.android.synthetic.main.activity_full_player.imgCover
 
 class FullPlayerActivity : AppCompatActivity() {
     private var imgCoverBackground: ImageView? = null
@@ -27,10 +30,14 @@ class FullPlayerActivity : AppCompatActivity() {
     //Playback Icon
     private var flRewind: FrameLayout? = null
     private var flPlayPause: FrameLayout? = null
+    private var imgPlayPause: ImageView? = null
     private var flForward: FrameLayout? = null
 
     private var flRepeat: FrameLayout? = null
     private var flFavorite: FrameLayout? = null
+
+    private var mediaPlayer: MediaPlayer? = null
+    private var rotationView: RotationView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,15 +61,67 @@ class FullPlayerActivity : AppCompatActivity() {
         //Playback Icon
         flRewind = findViewById(R.id.flRewind)
         flPlayPause = findViewById(R.id.flPlayPause)
+        imgPlayPause = findViewById(R.id.imgPlayPause)
         flForward = findViewById(R.id.flForward)
 
         flRepeat = findViewById(R.id.flRepeat)
         flFavorite = findViewById(R.id.flFavorite)
+
+        mediaPlayer = MiniPlayerFragment.mediaPlayer
+        rotationView = RotationView()
+//        rotationView = MiniPlayerFragment.rotationView
     }
 
     private fun addEvent() {
         getIntentData()
         setOnClick()
+
+        setCompletionMediaPlayerListener()
+//        getDefaultRotateCover()
+        changeRotationStatus()
+        changePlayPauseIcon()
+    }
+
+    private fun changeMusicStatus() {
+        if (mediaPlayer?.isPlaying == false) {
+            mediaPlayer?.start()
+        } else {
+            mediaPlayer?.pause()
+        }
+    }
+
+    private fun changeRotationStatus() {
+        if (mediaPlayer?.isPlaying == true) {
+            if (rotationView?.isNull() == true) {
+                getDefaultRotateCover()
+                rotationView?.start()
+            } else {
+                rotationView?.resume()
+            }
+        } else {
+            rotationView?.pause()
+        }
+    }
+
+    private fun getDefaultRotateCover() {
+        rotationView?.view = imgCover
+        rotationView?.getDefault()
+        rotationView?.setAnimatedFraction(MiniPlayerFragment.rotationView?.getAnimatedFraction()!!)
+    }
+
+    private fun changePlayPauseIcon() {
+        if (mediaPlayer?.isPlaying == true) {
+            imgPlayPause?.setImageResource(R.drawable.ic_pause)
+        } else {
+            imgPlayPause?.setImageResource(R.drawable.ic_play)
+        }
+    }
+
+    private fun setCompletionMediaPlayerListener() {
+        mediaPlayer?.setOnCompletionListener {
+            imgPlayPause?.setImageResource(R.drawable.ic_play)
+            rotationView?.pause()
+        }
     }
 
     private fun getIntentData() {
@@ -93,7 +152,9 @@ class FullPlayerActivity : AppCompatActivity() {
         })
 
         flPlayPause?.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Play Pause", Toast.LENGTH_SHORT).show()
+            changeMusicStatus()
+            changeRotationStatus()
+            changePlayPauseIcon()
         })
 
         flForward?.setOnClickListener(View.OnClickListener {

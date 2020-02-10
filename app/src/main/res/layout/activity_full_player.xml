@@ -159,6 +159,7 @@
             android:clickable="true">
 
             <ImageView
+                android:id="@+id/imgPlayPause"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
