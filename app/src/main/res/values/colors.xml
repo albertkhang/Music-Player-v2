@@ -15,7 +15,7 @@
 
     <!--    Background-->
     <color name="colorMiniPlayerBackground">#1B212E</color>
-    <color name="colorSongItemBackground">#343A47</color>
+    <color name="colorSongItemBackground">#262D3B</color>
 
     <!--    Icon-->
     <color name="colorIcon">#E9E9EB</color>

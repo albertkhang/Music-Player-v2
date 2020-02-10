@@ -44,6 +44,10 @@
     <dimen name="dimenFullPlayerTimestampSize">10sp</dimen>
     <dimen name="dimenFullPlayerTimestampMargin">16dp</dimen>
 
+    <!--    RecyclerView-->
     <dimen name="dimenSongsRecyclerViewMarginTop">16dp</dimen>
     <dimen name="dimenSongsRecyclerViewMarginSlide">16dp</dimen>
+
+    <!--    Song Item-->
+    <dimen name="dimenSongsItemHeight">70dp</dimen>
 </resources>
