@@ -9,6 +9,7 @@
 
     <!--    Text-->
     <color name="colorSongName">#DBDAE8</color>
+    <color name="colorTitle">#DBDAE8</color>
     <color name="colorSingerName">#87879F</color>
     <color name="colorTimestamps">#999EA1</color>
 

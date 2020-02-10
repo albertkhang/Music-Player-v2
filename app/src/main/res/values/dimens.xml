@@ -43,4 +43,7 @@
     <dimen name="dimenFullPlayerSeekBarMarginBottom">45dp</dimen>
     <dimen name="dimenFullPlayerTimestampSize">10sp</dimen>
     <dimen name="dimenFullPlayerTimestampMargin">16dp</dimen>
+
+    <dimen name="dimenSongsRecyclerViewMarginTop">16dp</dimen>
+    <dimen name="dimenSongsRecyclerViewMarginSlide">16dp</dimen>
 </resources>
