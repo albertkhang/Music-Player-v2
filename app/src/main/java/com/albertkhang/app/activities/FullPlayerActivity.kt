@@ -1,5 +1,7 @@
 package com.albertkhang.app.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
@@ -8,13 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.albertkhang.app.*
+import com.albertkhang.app.R
 import com.albertkhang.app.animations.RotationView
 import com.albertkhang.app.fragments.MiniPlayerFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
-import kotlinx.android.synthetic.main.activity_full_player.imgCover
+import kotlinx.android.synthetic.main.activity_full_player.*
+
 
 class FullPlayerActivity : AppCompatActivity() {
     private var imgCoverBackground: ImageView? = null
@@ -69,7 +72,8 @@ class FullPlayerActivity : AppCompatActivity() {
 
         mediaPlayer = MiniPlayerFragment.mediaPlayer
         rotationView = RotationView()
-//        rotationView = MiniPlayerFragment.rotationView
+        rotationView?.view = imgCover
+        updateRotationStatus()
     }
 
     private fun addEvent() {
@@ -77,9 +81,25 @@ class FullPlayerActivity : AppCompatActivity() {
         setOnClick()
 
         setCompletionMediaPlayerListener()
-//        getDefaultRotateCover()
         changeRotationStatus()
         changePlayPauseIcon()
+    }
+
+    private fun returnIntent() {
+        val resultIntent = Intent()
+        resultIntent.putExtra("fraction_value", rotationView?.getAnimatedFraction())
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
+    }
+
+    override fun onStop() {
+        returnIntent()
+        super.onStop()
+    }
+
+    override fun onBackPressed() {
+        returnIntent()
+        super.onBackPressed()
     }
 
     private fun changeMusicStatus() {
@@ -91,22 +111,18 @@ class FullPlayerActivity : AppCompatActivity() {
     }
 
     private fun changeRotationStatus() {
-        if (mediaPlayer?.isPlaying == true) {
-            if (rotationView?.isNull() == true) {
-                getDefaultRotateCover()
-                rotationView?.start()
-            } else {
-                rotationView?.resume()
-            }
+        if (mediaPlayer?.isPlaying == true && rotationView?.isNull() != true) {
+            rotationView?.resume()
         } else {
             rotationView?.pause()
         }
     }
 
-    private fun getDefaultRotateCover() {
-        rotationView?.view = imgCover
+    private fun updateRotationStatus() {
         rotationView?.getDefault()
         rotationView?.setAnimatedFraction(MiniPlayerFragment.rotationView?.getAnimatedFraction()!!)
+        rotationView?.start()
+        rotationView?.pause()
     }
 
     private fun changePlayPauseIcon() {
@@ -136,7 +152,7 @@ class FullPlayerActivity : AppCompatActivity() {
 
     private fun setOnClick() {
         flDownArrow?.setOnClickListener(View.OnClickListener {
-            finish()
+            returnIntent()
         })
 
         flQueueMusic?.setOnClickListener(View.OnClickListener {

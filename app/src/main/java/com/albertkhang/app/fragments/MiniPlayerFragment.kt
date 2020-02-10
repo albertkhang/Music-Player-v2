@@ -1,5 +1,6 @@
 package com.albertkhang.app.fragments
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
@@ -71,7 +72,7 @@ class MiniPlayerFragment : Fragment() {
     private var imgFavorite: ImageView? = null
     private var isFavoriteClicked = false
 
-//    private var mediaPlayer: MediaPlayer? = null
+    //    private var mediaPlayer: MediaPlayer? = null
     private var imgPlayPause: ImageView? = null
 //    private var rotateView: RotationView? = null
 
@@ -79,6 +80,8 @@ class MiniPlayerFragment : Fragment() {
     private var txtSingerName: TextView? = null
 
     private var currentSong: Song? = null
+
+    private val ROTATION_COVER_STATUS_REQUEST_CODE = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         addControl()
@@ -97,6 +100,8 @@ class MiniPlayerFragment : Fragment() {
 
         txtSongName = view?.findViewById(R.id.txtSongName)
         txtSingerName = view?.findViewById(R.id.txtSingerName)
+
+        setDefaultRotationCover()
     }
 
     private fun addEvent() {
@@ -121,8 +126,10 @@ class MiniPlayerFragment : Fragment() {
         })
     }
 
-    private fun getDefaultRotateCover() {
+    private fun setDefaultRotationCover() {
         rotationView?.getDefault()
+        rotationView?.start()
+        rotationView?.pause()
     }
 
     private fun resetDefaultRotateCover() {
@@ -130,13 +137,8 @@ class MiniPlayerFragment : Fragment() {
     }
 
     private fun changeCoverStatus() {
-        if (mediaPlayer?.isPlaying == true) {
-            if (rotationView?.isNull() == true) {
-                getDefaultRotateCover()
-                rotationView?.start()
-            } else {
-                rotationView?.resume()
-            }
+        if (mediaPlayer?.isPlaying == true && rotationView?.isNull() != true) {
+            rotationView?.resume()
         } else {
             rotationView?.pause()
         }
@@ -188,7 +190,23 @@ class MiniPlayerFragment : Fragment() {
         intent.putExtra("singerName", currentSong?.singerName)
         intent.putExtra("cover_url", currentSong?.cover_url)
 
-        startActivity(intent)
+        startActivityForResult(intent, ROTATION_COVER_STATUS_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            ROTATION_COVER_STATUS_REQUEST_CODE -> {
+                Log.d("_onActivityResult", "ROTATION_COVER_STATUS_REQUEST_CODE")
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.d("_onActivityResult", "RESULT_OK")
+                    if (data != null) {
+                        rotationView?.setAnimatedFraction(data.getFloatExtra("fraction_value", 0f))
+                    }
+                }
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -223,12 +241,13 @@ class MiniPlayerFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
-        updateUIStatus()
+        updateUIStatusWhenBack()
     }
 
-    private fun updateUIStatus() {
+    private fun updateUIStatusWhenBack() {
         changePlayPauseIcon()
         changeCoverStatus()
+        // TODO: cập nhật vị trí khi start nhạc từ full player
     }
 
     override fun onStop() {
