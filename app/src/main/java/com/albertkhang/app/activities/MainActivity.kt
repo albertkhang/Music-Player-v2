@@ -37,7 +37,10 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
         addMiniPlayer()
 
         btnPlayMusic?.setOnClickListener(View.OnClickListener {
-            var data = Song(fake_songName, fake_singerName, fake_cover_url,null)
+            val data = Song()
+            data.songName = fake_songName
+            data.singerName = fake_singerName
+            data.cover_url = fake_cover_url
             EventBus.getDefault().post(data)
         })
     }

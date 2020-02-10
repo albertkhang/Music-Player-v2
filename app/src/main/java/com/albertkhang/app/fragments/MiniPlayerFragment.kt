@@ -149,6 +149,7 @@ class MiniPlayerFragment : Fragment() {
         mediaPlayer?.setOnCompletionListener {
             imgPlayPause?.setImageResource(R.drawable.ic_play)
             rotationView?.pause()
+            fractionValue = rotationView?.getAnimatedFraction()
 
             Log.d("_mediaPlayer", "setOnCompletionListener")
         }
@@ -187,7 +188,7 @@ class MiniPlayerFragment : Fragment() {
         intent.putExtra("singerName", currentSong?.singerName)
         intent.putExtra("cover_url", currentSong?.cover_url)
 
-        fractionValue= rotationView?.getAnimatedFraction()
+        fractionValue = rotationView?.getAnimatedFraction()
 
         startActivity(intent)
     }
@@ -225,11 +226,19 @@ class MiniPlayerFragment : Fragment() {
         super.onStart()
         EventBus.getDefault().register(this)
         updateUIStatusWhenBack()
+        setCompletionMediaPlayerListener()
     }
 
     private fun updateUIStatusWhenBack() {
         changePlayPauseIcon()
         changeCoverStatus()
+        updateCoverFraction()
+    }
+
+    private fun updateCoverFraction() {
+        if (fractionValue != rotationView?.getAnimatedFraction()) {
+            rotationView?.setAnimatedFraction(fractionValue)
+        }
     }
 
     override fun onStop() {

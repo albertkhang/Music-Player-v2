@@ -42,7 +42,7 @@ class FullPlayerActivity : AppCompatActivity() {
     private var mediaPlayer: MediaPlayer? = null
     private var rotationView: RotationView? = null
 
-    override fun onCreate(savedInstanceState: Bundle?)  {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_player)
 
@@ -124,7 +124,9 @@ class FullPlayerActivity : AppCompatActivity() {
     private fun setCompletionMediaPlayerListener() {
         mediaPlayer?.setOnCompletionListener {
             imgPlayPause?.setImageResource(R.drawable.ic_play)
+
             rotationView?.pause()
+            MiniPlayerFragment.fractionValue = rotationView?.getAnimatedFraction()
         }
     }
 
