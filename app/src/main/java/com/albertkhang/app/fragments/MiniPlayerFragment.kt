@@ -99,8 +99,6 @@ class MiniPlayerFragment : Fragment() {
 
         txtSongName = view?.findViewById(R.id.txtSongName)
         txtSingerName = view?.findViewById(R.id.txtSingerName)
-
-        setDefaultRotationCover()
     }
 
     private fun addEvent() {
@@ -115,7 +113,6 @@ class MiniPlayerFragment : Fragment() {
         })
 
         imgPlayPause?.setOnClickListener(View.OnClickListener {
-            //TODO: không xoay cover khi nhấn 2 bài liên tiếp và không play giữa mỗi lần nhấn
             if (mediaPlayer != null) {
                 changeMusicStatus()
                 changeCoverStatus()
@@ -223,6 +220,8 @@ class MiniPlayerFragment : Fragment() {
                 }
 
                 if (mediaPlayer != null) {
+                    Log.d("onEvent", "mediaPlayer != null")
+
                     mediaPlayer?.stop()
                     mediaPlayer = null
                     rotationView?.end()
@@ -232,6 +231,7 @@ class MiniPlayerFragment : Fragment() {
 
                 bindSongToMediaPlayer()
                 setCompletionMediaPlayerListener()
+                setDefaultRotationCover()
             }
         }
     }

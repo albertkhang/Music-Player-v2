@@ -25,6 +25,7 @@ class RotationView {
     }
 
     fun resetAnimator() {
+        Log.d("RotationView", "resetAnimator")
         rotateAnimation = null
     }
 
