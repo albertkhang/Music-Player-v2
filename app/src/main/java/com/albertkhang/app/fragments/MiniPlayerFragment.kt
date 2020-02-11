@@ -22,7 +22,9 @@ import com.albertkhang.app.animations.RotationView
 import com.albertkhang.app.utils.Song
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_full_player.*
 import kotlinx.android.synthetic.main.fragment_mini_player.*
+import kotlinx.android.synthetic.main.fragment_mini_player.flFavorite
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -113,6 +115,7 @@ class MiniPlayerFragment : Fragment() {
         })
 
         imgPlayPause?.setOnClickListener(View.OnClickListener {
+            //TODO: không xoay cover khi nhấn 2 bài liên tiếp và không play giữa mỗi lần nhấn
             if (mediaPlayer != null) {
                 changeMusicStatus()
                 changeCoverStatus()
@@ -142,8 +145,17 @@ class MiniPlayerFragment : Fragment() {
     }
 
     private fun bindSongToMediaPlayer() {
-        // TODO: change structure
-        mediaPlayer = MediaPlayer.create(view?.context, R.raw.co_nhu_khong_co_34s)
+        Toast.makeText(view?.context, "Downloading", Toast.LENGTH_SHORT).show()
+
+        mediaPlayer = MediaPlayer()
+        mediaPlayer?.setDataSource(currentSong?.song_url)
+        mediaPlayer?.prepareAsync()
+        mediaPlayer?.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
+            override fun onPrepared(p0: MediaPlayer?) {
+                Toast.makeText(view?.context, "Downloaded", Toast.LENGTH_SHORT).show()
+                imgPlayPause?.callOnClick()
+            }
+        })
     }
 
     private fun setCompletionMediaPlayerListener() {
@@ -185,7 +197,6 @@ class MiniPlayerFragment : Fragment() {
 
     private fun openFullPlayerActivity() {
         val intent = Intent(view?.context, FullPlayerActivity::class.java)
-        // TODO: change data structure
         intent.putExtra("songName", currentSong?.songName)
         intent.putExtra("singerName", currentSong?.singers())
         intent.putExtra("cover_url", currentSong?.album?.cover_url)
