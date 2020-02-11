@@ -184,9 +184,9 @@ class MiniPlayerFragment : Fragment() {
 
     private fun openFullPlayerActivity() {
         val intent = Intent(view?.context, FullPlayerActivity::class.java)
-        intent.putExtra("songName", currentSong?.songName)
-        intent.putExtra("singerName", currentSong?.singerName)
-        intent.putExtra("cover_url", currentSong?.cover_url)
+//        intent.putExtra("songName", currentSong?.songName)
+//        intent.putExtra("singerName", currentSong?.singerName)
+//        intent.putExtra("cover_url", currentSong?.cover_url)
 
         fractionValue = rotationView?.getAnimatedFraction()
 
@@ -200,13 +200,13 @@ class MiniPlayerFragment : Fragment() {
                 currentSong = data.copy()
 
                 txtSongName?.setText(data.songName)
-                txtSingerName?.setText(data.singerName)
+//                txtSingerName?.setText(data.singerName)
 
-                imgCover?.let {
-                    Glide.with(this)
-                        .load(data.cover_url)
-                        .into(it)
-                }
+//                imgCover?.let {
+//                    Glide.with(this)
+//                        .load(data.cover_url)
+//                        .into(it)
+//                }
 
                 if (mediaPlayer != null) {
                     mediaPlayer?.stop()
