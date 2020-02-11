@@ -18,6 +18,9 @@
     <dimen name="dimenMiniPlayerButtonFrameSize">48dp</dimen>
     <dimen name="dimenMiniPlayerForwardFrameMarginRight">0dp</dimen>
 
+    <!--    Shadow-->
+    <dimen name="dimenMiniPlayerShadowHeight">8dp</dimen>
+
     <!--    FullPlayer-->
 
     <!--    Cover-->
@@ -49,5 +52,6 @@
     <dimen name="dimenSongsRecyclerViewMarginSlide">16dp</dimen>
 
     <!--    Song Item-->
-    <dimen name="dimenSongsItemHeight">70dp</dimen>
+    <dimen name="dimenSongsItemHeight">82dp</dimen>
+    <dimen name="dimenSongsItemMarginBottom">12dp</dimen>
 </resources>

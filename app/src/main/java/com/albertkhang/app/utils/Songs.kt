@@ -18,13 +18,20 @@ data class Song(
     var song_url: String,
 
     @SerializedName("contributors")
-    var contributors: List<Contributors>
+    var contributors: List<Contributors>,
+
+    @SerializedName("album")
+    var album: Album,
+
+    var isFavorite: Boolean
 )
 
 data class Contributors(
     @SerializedName("name")
-    var singerName: String,
+    var singerName: String
+)
 
-    @SerializedName("picture_big")
+data class Album(
+    @SerializedName("cover_big")
     var cover_url: String
 )
