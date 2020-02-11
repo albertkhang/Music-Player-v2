@@ -1,9 +1,8 @@
 package com.albertkhang.app.activities
 
-import android.app.Activity
-import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -25,6 +24,10 @@ class FullPlayerActivity : AppCompatActivity() {
     //    Top Icon
     private var flDownArrow: FrameLayout? = null
     private var flQueueMusic: FrameLayout? = null
+
+    //Timestamp
+    private var txtStartTimestamp: TextView? = null
+    private var txtEndTimestamp: TextView? = null
 
     //Song And Singer Name
     private var txtSongName: TextView? = null
@@ -56,6 +59,10 @@ class FullPlayerActivity : AppCompatActivity() {
         //Top Icon
         flDownArrow = findViewById(R.id.flDownArrow)
         flQueueMusic = findViewById(R.id.flQueueMusic)
+
+        //Timestamp
+        txtStartTimestamp = findViewById(R.id.txtStartTimestamp)
+        txtEndTimestamp = findViewById(R.id.txtEndTimestamp)
 
         //Song And Singer Name
         txtSongName = findViewById(R.id.txtSongName)
@@ -135,9 +142,35 @@ class FullPlayerActivity : AppCompatActivity() {
         txtSingerName?.setText(intent.getStringExtra("singerName"))
 
         val cover_url = intent.getStringExtra("cover_url")
-
         setCover(cover_url)
         makeBlurCoverBackground(cover_url)
+
+        txtEndTimestamp?.text = getTimestamp(intent.getIntExtra("duration", 0))
+    }
+
+    private fun getTimestamp(duration: Int): String {
+        Log.d("getTimestamp", duration.toString())
+
+        val minute = duration / 60
+        val second = duration % 60
+
+        var result = ""
+
+        if (minute > 9) {
+            result += minute
+        } else {
+            result += "0$minute"
+        }
+
+        result += ":"
+
+        if (second > 9) {
+            result += second
+        } else {
+            result += "0$second"
+        }
+
+        return result
     }
 
     private fun setOnClick() {

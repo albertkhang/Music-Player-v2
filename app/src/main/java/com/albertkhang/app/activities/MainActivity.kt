@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.albertkhang.app.*
@@ -13,6 +14,7 @@ import com.albertkhang.app.networks.SongsService
 import com.albertkhang.app.networks.api_url
 import com.albertkhang.app.utils.Song
 import com.albertkhang.app.utils.Songs
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,6 +54,12 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
 
     private fun addEvent() {
         getSongsData()
+        songsAdapter?.setOnItemClickListener(object : SongsAdapter.OnItemClickListener {
+            override fun onItemClickListener(view: View, position: Int) {
+                EventBus.getDefault().post(songList?.get(position))
+            }
+
+        })
     }
 
     private fun getSongsData() {

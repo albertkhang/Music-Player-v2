@@ -142,6 +142,7 @@ class MiniPlayerFragment : Fragment() {
     }
 
     private fun bindSongToMediaPlayer() {
+        // TODO: change structure
         mediaPlayer = MediaPlayer.create(view?.context, R.raw.co_nhu_khong_co_34s)
     }
 
@@ -184,9 +185,11 @@ class MiniPlayerFragment : Fragment() {
 
     private fun openFullPlayerActivity() {
         val intent = Intent(view?.context, FullPlayerActivity::class.java)
-//        intent.putExtra("songName", currentSong?.songName)
-//        intent.putExtra("singerName", currentSong?.singerName)
-//        intent.putExtra("cover_url", currentSong?.cover_url)
+        // TODO: change data structure
+        intent.putExtra("songName", currentSong?.songName)
+        intent.putExtra("singerName", currentSong?.singers())
+        intent.putExtra("cover_url", currentSong?.album?.cover_url)
+        intent.putExtra("duration", currentSong?.duration)
 
         fractionValue = rotationView?.getAnimatedFraction()
 
@@ -200,13 +203,13 @@ class MiniPlayerFragment : Fragment() {
                 currentSong = data.copy()
 
                 txtSongName?.setText(data.songName)
-//                txtSingerName?.setText(data.singerName)
+                txtSingerName?.setText(data.singers())
 
-//                imgCover?.let {
-//                    Glide.with(this)
-//                        .load(data.cover_url)
-//                        .into(it)
-//                }
+                imgCover?.let {
+                    Glide.with(this)
+                        .load(data.album.cover_url)
+                        .into(it)
+                }
 
                 if (mediaPlayer != null) {
                     mediaPlayer?.stop()

@@ -24,7 +24,25 @@ data class Song(
     var album: Album,
 
     var isFavorite: Boolean
-)
+) {
+    fun singers(): String {
+        if (contributors.size < 2) {
+            return contributors[0].singerName
+        } else {
+            var singers = ""
+
+            for (i in contributors.indices) {
+                if (i != 0) {
+                    singers += ", "
+                }
+
+                singers += contributors[i].singerName
+            }
+
+            return singers
+        }
+    }
+}
 
 data class Contributors(
     @SerializedName("name")
@@ -35,3 +53,4 @@ data class Album(
     @SerializedName("cover_big")
     var cover_url: String
 )
+

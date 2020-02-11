@@ -22,6 +22,16 @@ class SongsAdapter(val context: Context) :
         notifyDataSetChanged()
     }
 
+    interface OnItemClickListener {
+        fun onItemClickListener(view: View, position: Int)
+    }
+
+    private var onItemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.onItemClickListener = onItemClickListener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.item_song, parent, false)
@@ -43,10 +53,17 @@ class SongsAdapter(val context: Context) :
         holder.txtSongName.text = songs[position].songName
         Log.d("songsAdapter", songs[position].songName)
 
-        holder.txtSingerName.text = SingerName(position)
-        Log.d("songsAdapter", SingerName(position))
+        holder.txtSingerName.text = songs[position].singers()
+        Log.d("songsAdapter", songs[position].singers())
 
         changeFavoriteIcon(holder, position)
+
+        holder.itemView.setOnClickListener { view ->
+            onItemClickListener?.onItemClickListener(
+                view,
+                position
+            )
+        }
     }
 
     private fun changeFavoriteIcon(holder: ViewHolder, position: Int) {
@@ -54,24 +71,6 @@ class SongsAdapter(val context: Context) :
             holder.imgFavorite.setImageResource(R.drawable.ic_favorite)
         } else {
             holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border)
-        }
-    }
-
-    private fun SingerName(position: Int): String {
-        if (songs[position].contributors.size < 2) {
-            return songs[position].contributors[0].singerName
-        } else {
-            var singers = ""
-
-            for (i in songs[position].contributors.indices) {
-                if (i != 0) {
-                    singers += ", "
-                }
-
-                singers += songs[position].contributors[i].singerName
-            }
-
-            return singers
         }
     }
 
