@@ -149,8 +149,10 @@ class MiniPlayerFragment : Fragment() {
     }
 
     private fun bindThenStart() {
-        mediaPlayer = MediaPlayer.create(context, Uri.parse("file:${getSongDir()}"))
-        imgPlayPause?.callOnClick()
+        mediaPlayer = MediaPlayer()
+        mediaPlayer?.setDataSource("file:${getSongDir()}")
+        mediaPlayer?.prepareAsync()
+        mediaPlayer?.setOnPreparedListener { imgPlayPause?.callOnClick() }
     }
 
     private fun setCompletionMediaPlayerListener() {
