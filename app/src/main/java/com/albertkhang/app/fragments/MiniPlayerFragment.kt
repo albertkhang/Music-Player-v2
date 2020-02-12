@@ -147,12 +147,8 @@ class MiniPlayerFragment : Fragment() {
         mediaPlayer = MediaPlayer()
         mediaPlayer?.setDataSource(currentSong?.song_url)
         mediaPlayer?.prepareAsync()
-        mediaPlayer?.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
-            override fun onPrepared(p0: MediaPlayer?) {
-                Toast.makeText(view?.context, "Downloaded", Toast.LENGTH_SHORT).show()
-                imgPlayPause?.callOnClick()
-            }
-        })
+        mediaPlayer?.setOnPreparedListener { imgPlayPause?.callOnClick()
+        }
     }
 
     private fun setCompletionMediaPlayerListener() {

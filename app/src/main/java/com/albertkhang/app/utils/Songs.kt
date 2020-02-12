@@ -1,6 +1,8 @@
 package com.albertkhang.app.utils
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
+import java.security.MessageDigest
 
 data class Songs(
     @SerializedName("data")
@@ -41,6 +43,19 @@ data class Song(
 
             return singers
         }
+    }
+
+    fun getSongNameMD5(): String {
+        val md = MessageDigest.getInstance("MD5")
+        val messageDigest: ByteArray = md.digest(song_url.toByteArray())
+
+        val bigInteger = BigInteger(1, messageDigest)
+        var hashText = bigInteger.toString(16)
+        while (hashText.length < 32) {
+            hashText = "0$hashText"
+        }
+
+        return hashText
     }
 }
 
