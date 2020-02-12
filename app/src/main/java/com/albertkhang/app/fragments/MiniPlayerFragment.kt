@@ -245,6 +245,11 @@ class MiniPlayerFragment : Fragment() {
     private fun downloadThenStart() {
         Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show()
 
+        mediaPlayer = MediaPlayer()
+        mediaPlayer?.setDataSource(currentSong?.song_url)
+        mediaPlayer?.prepareAsync()
+        mediaPlayer?.setOnPreparedListener { imgPlayPause?.callOnClick() }
+
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(api_song_url)
             .build()
@@ -268,8 +273,7 @@ class MiniPlayerFragment : Fragment() {
                 inputStream?.close()
                 fileOutputStream.close()
 
-                mediaPlayer = MediaPlayer.create(context, Uri.parse("file:${getSongDir()}"))
-                imgPlayPause?.callOnClick()
+                Log.d("downloadThenStart", "Downloaded")
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

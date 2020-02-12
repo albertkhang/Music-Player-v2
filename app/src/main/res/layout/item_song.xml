@@ -7,6 +7,19 @@
     android:background="@color/colorSongItemBackground"
     android:layout_marginBottom="@dimen/dimenSongsItemMarginBottom">
 
+    <FrameLayout
+        android:id="@+id/flSongItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        style="@style/RippleViewBackground"
+        android:clickable="true"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
     <ImageView
         android:id="@+id/imgCover"
         android:layout_width="0dp"

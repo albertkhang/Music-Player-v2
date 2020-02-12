@@ -1,10 +1,12 @@
 package com.albertkhang.app.adapters
 
 import android.content.Context
+import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -64,6 +66,8 @@ class SongsAdapter(val context: Context) :
                 position
             )
         }
+
+        holder.flSongItem.setOnClickListener { view -> run { holder.itemView.callOnClick() } }
     }
 
     private fun changeFavoriteIcon(holder: ViewHolder, position: Int) {
@@ -75,6 +79,8 @@ class SongsAdapter(val context: Context) :
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val flSongItem: FrameLayout = itemView.findViewById(R.id.flSongItem)
+
         val imgCover: ImageView = itemView.findViewById(R.id.imgCover)
 
         val txtSongName: TextView = itemView.findViewById(R.id.txtSongName)
