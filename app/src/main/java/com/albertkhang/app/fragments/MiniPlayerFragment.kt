@@ -1,11 +1,12 @@
 package com.albertkhang.app.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,15 +20,25 @@ import android.widget.Toast
 import com.albertkhang.app.R
 import com.albertkhang.app.activities.FullPlayerActivity
 import com.albertkhang.app.animations.RotationView
+import com.albertkhang.app.networks.SongsService
+import com.albertkhang.app.networks.song_url
 import com.albertkhang.app.utils.Song
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_full_player.*
-import kotlinx.android.synthetic.main.fragment_mini_player.*
 import kotlinx.android.synthetic.main.fragment_mini_player.flFavorite
+import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
+import java.nio.file.Files
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -142,13 +153,63 @@ class MiniPlayerFragment : Fragment() {
     }
 
     private fun bindSongToMediaPlayer() {
-        Toast.makeText(view?.context, "Downloading", Toast.LENGTH_SHORT).show()
+        //TODO: lỗi truyền vào mã MD5 với url để tải nhạc
+        val filename = "${currentSong?.getSongNameMD5()}.mp3"
+        Log.d("bindSongToMediaPlayer", filename)
 
-        mediaPlayer = MediaPlayer()
-        mediaPlayer?.setDataSource(currentSong?.song_url)
-        mediaPlayer?.prepareAsync()
-        mediaPlayer?.setOnPreparedListener { imgPlayPause?.callOnClick()
+        val dir =
+            "${Environment.getExternalStorageDirectory().path}/${Environment.DIRECTORY_DOWNLOADS}/${filename}"
+        Log.d("bindSongToMediaPlayer", "$dir")
+
+        val file = File(dir)
+
+        if (file.exists()) {
+            Log.d("_bindSongToMediaPlayer", "file.exists")
+            mediaPlayer = MediaPlayer.create(context, Uri.parse("file:${dir}"))
+        } else {
+            Log.d("_bindSongToMediaPlayer", "downloadSong")
+            downloadSong(filename)
         }
+    }
+
+    private fun downloadSong(fileName: String) {
+        Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show()
+
+        val dir =
+            "${Environment.getExternalStorageDirectory().path}/${Environment.DIRECTORY_DOWNLOADS}/${fileName}"
+        Log.d("bindSongToMediaPlayer", "$dir")
+
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(song_url)
+            .build()
+
+        val songInterface = retrofit.create(SongsService.SongInterface::class.java)
+        songInterface.get(fileName).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val file = File(dir)
+                Log.d("songInterface", "$file")
+
+                val inputStream = response.body()?.byteStream()
+                val fileOutputStream = FileOutputStream(file)
+
+                var line = inputStream?.read()
+
+                while (line != -1) {
+                    line?.let { fileOutputStream.write(it) }
+                    line = inputStream?.read()
+                }
+
+                inputStream?.close()
+                fileOutputStream.close()
+
+                Log.d("songInterface", "${file.path}")
+                mediaPlayer = MediaPlayer.create(context, Uri.parse("file:${dir}"))
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("songInterface", "$t")
+            }
+        })
     }
 
     private fun setCompletionMediaPlayerListener() {

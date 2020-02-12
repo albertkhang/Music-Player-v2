@@ -1,10 +1,12 @@
 package com.albertkhang.app.activities
 
+import android.Manifest
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.albertkhang.app.*
@@ -14,6 +16,8 @@ import com.albertkhang.app.networks.SongsService
 import com.albertkhang.app.networks.api_url
 import com.albertkhang.app.utils.Song
 import com.albertkhang.app.utils.Songs
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,6 +44,8 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
     }
 
     private fun addControl() {
+        requestPermission()
+
         rvSongs = findViewById(R.id.rvSongs)
         songList = mutableListOf()
         songsAdapter = SongsAdapter(this)
@@ -62,29 +68,54 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
         })
     }
 
+    private fun requestPermission() {
+        val permissionlistener: PermissionListener = object : PermissionListener {
+            override fun onPermissionGranted() {
+                Toast.makeText(this@MainActivity, "Permission Granted", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onPermissionDenied(deniedPermissions: List<String>) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Permission Denied\n$deniedPermissions",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        TedPermission.with(this)
+            .setPermissionListener(permissionlistener)
+            .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+            .setPermissions(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+            .check()
+    }
+
     private fun getSongsData() {
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(api_url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val songInterface = retrofit.create(SongsService.SongInterface::class.java)
+        val apiInterface = retrofit.create(SongsService.ApiInterface::class.java)
 
-        songInterface.get().enqueue(object : Callback<Songs> {
+        apiInterface.get().enqueue(object : Callback<Songs> {
             override fun onResponse(call: Call<Songs>, response: Response<Songs>) {
                 val songs = response.body()
-                Log.d("enqueue", "size: ${songs?.songs?.size}")
+                Log.d("apiInterface", "size: ${songs?.songs?.size}")
 
                 songs?.songs?.forEach {
                     songList?.add(it)
-                    Log.d("enqueue", "songName: ${it.songName}")
+                    Log.d("apiInterface", "songName: ${it.songName}")
                 }
 
                 songsAdapter?.update(songList!!)
             }
 
             override fun onFailure(call: Call<Songs>, t: Throwable) {
-                Log.d("enqueue", "$t")
+                Log.d("apiInterface", "$t")
             }
         })
     }
