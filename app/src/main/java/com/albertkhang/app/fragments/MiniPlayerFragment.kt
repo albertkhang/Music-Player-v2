@@ -150,13 +150,6 @@ class MiniPlayerFragment : Fragment() {
         }
     }
 
-    private fun bindThenStart() {
-        mediaPlayer = MediaPlayer()
-        mediaPlayer?.setDataSource("file:${getSongDir()}")
-        mediaPlayer?.prepareAsync()
-        mediaPlayer?.setOnPreparedListener { imgPlayPause?.callOnClick() }
-    }
-
     private fun setCompletionMediaPlayerListener() {
         mediaPlayer?.setOnCompletionListener {
             imgPlayPause?.setImageResource(R.drawable.ic_play)
@@ -231,6 +224,8 @@ class MiniPlayerFragment : Fragment() {
                     resetDefaultRotateCover()
                 }
 
+                flMiniPlayer?.isClickable = false
+
                 if (isSongExists()) {
                     Log.d("isSongExists", "bindThenStart()")
                     bindThenStart()
@@ -244,13 +239,29 @@ class MiniPlayerFragment : Fragment() {
         }
     }
 
+    private fun bindThenStart() {
+        mediaPlayer = MediaPlayer()
+        mediaPlayer?.setDataSource("file:${getSongDir()}")
+        mediaPlayer?.prepareAsync()
+        mediaPlayer?.setOnPreparedListener {
+            imgPlayPause?.callOnClick()
+            flMiniPlayer?.isClickable = true
+            Log.d("mediaPlayer", "duration_bind: ${mediaPlayer!!.duration}")
+        }
+    }
+
     private fun downloadThenStart() {
         Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show()
 
         mediaPlayer = MediaPlayer()
         mediaPlayer?.setDataSource(currentSong?.song_url)
         mediaPlayer?.prepareAsync()
-        mediaPlayer?.setOnPreparedListener { imgPlayPause?.callOnClick() }
+        mediaPlayer?.setOnPreparedListener {
+            imgPlayPause?.callOnClick()
+            flMiniPlayer?.isClickable = true
+            Log.d("mediaPlayer", "duration_download: ${mediaPlayer!!.duration}")
+        }
+
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(api_song_url)

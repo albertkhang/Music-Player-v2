@@ -2,12 +2,10 @@ package com.albertkhang.app.activities
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.albertkhang.app.R
 import com.albertkhang.app.animations.RotationView
@@ -32,6 +30,18 @@ class FullPlayerActivity : AppCompatActivity() {
     //Song And Singer Name
     private var txtSongName: TextView? = null
     private var txtSingerName: TextView? = null
+
+    //SeekBar
+    private var sbSeekBar: SeekBar? = null
+    private val seekBarHandler = Handler()
+    private val seekBarRunnable = object : Runnable {
+        override fun run() {
+            if (mediaPlayer?.isPlaying == true) {
+                sbSeekBar?.progress = mediaPlayer!!.currentPosition
+                seekBarHandler.postDelayed(this, 1000)
+            }
+        }
+    }
 
     //Playback Icon
     private var flRewind: FrameLayout? = null
@@ -68,6 +78,9 @@ class FullPlayerActivity : AppCompatActivity() {
         txtSongName = findViewById(R.id.txtSongName)
         txtSingerName = findViewById(R.id.txtSingerName)
 
+        //SeekBar
+        sbSeekBar = findViewById(R.id.sbSeekBar)
+
         //Playback Icon
         flRewind = findViewById(R.id.flRewind)
         flPlayPause = findViewById(R.id.flPlayPause)
@@ -90,6 +103,7 @@ class FullPlayerActivity : AppCompatActivity() {
         setCompletionMediaPlayerListener()
         changeRotationStatus()
         changePlayPauseIcon()
+        changeSeekBarStatus()
     }
 
     override fun onStop() {
@@ -102,6 +116,14 @@ class FullPlayerActivity : AppCompatActivity() {
             mediaPlayer?.start()
         } else {
             mediaPlayer?.pause()
+        }
+    }
+
+    private fun changeSeekBarStatus() {
+        if (mediaPlayer?.isPlaying == true) {
+            runUpdateSeekBar()
+        } else {
+            stopUpdateSeekBar()
         }
     }
 
@@ -145,7 +167,19 @@ class FullPlayerActivity : AppCompatActivity() {
         setCover(cover_url)
         makeBlurCoverBackground(cover_url)
 
-        txtEndTimestamp?.text = getTimestamp(intent.getIntExtra("duration", 0))
+//        Using below line if music url is full song
+//        txtEndTimestamp?.text = getTimestamp(intent.getIntExtra("duration", 0))
+
+        txtEndTimestamp?.text = getTimestamp(mediaPlayer!!.duration / 1000)
+        sbSeekBar?.max = mediaPlayer!!.duration
+    }
+
+    private fun runUpdateSeekBar() {
+        seekBarRunnable.run()
+    }
+
+    private fun stopUpdateSeekBar() {
+        seekBarHandler.removeCallbacks(seekBarRunnable)
     }
 
     private fun getTimestamp(duration: Int): String {
@@ -192,6 +226,7 @@ class FullPlayerActivity : AppCompatActivity() {
 
         flPlayPause?.setOnClickListener(View.OnClickListener {
             changeMusicStatus()
+            changeSeekBarStatus()
             changeRotationStatus()
             changePlayPauseIcon()
         })
