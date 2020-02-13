@@ -274,7 +274,6 @@ class FullPlayerActivity : AppCompatActivity() {
 
         flFavorite?.setOnClickListener(View.OnClickListener {
             Log.d("FullPlayerActivity", "flFavorite")
-            
         })
     }
 
