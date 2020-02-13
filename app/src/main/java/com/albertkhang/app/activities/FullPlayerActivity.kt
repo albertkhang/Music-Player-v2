@@ -177,6 +177,7 @@ class FullPlayerActivity : AppCompatActivity() {
             rotationView?.pause()
             MiniPlayerFragment.fractionValue = rotationView?.getAnimatedFraction()
 
+            mediaPlayer?.seekTo(0)
             sbSeekBar?.progress = 0
             txtCurrentTimestamp?.text = getTimestamp(0)
         }
