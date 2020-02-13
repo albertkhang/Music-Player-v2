@@ -24,8 +24,19 @@ class FullPlayerActivity : AppCompatActivity() {
     private var flQueueMusic: FrameLayout? = null
 
     //Timestamp
-    private var txtStartTimestamp: TextView? = null
+    private var txtCurrentTimestamp: TextView? = null
     private var txtEndTimestamp: TextView? = null
+    private val timestampHandler = Handler()
+    private val timestampRunnable = object : Runnable {
+        override fun run() {
+            if (mediaPlayer?.isPlaying == true) {
+                val timestamp = mediaPlayer?.currentPosition?.div(1000)
+                txtCurrentTimestamp?.text = getTimestamp(timestamp!!)
+
+                timestampHandler.postDelayed(this, 1000)
+            }
+        }
+    }
 
     //Song And Singer Name
     private var txtSongName: TextView? = null
@@ -71,7 +82,7 @@ class FullPlayerActivity : AppCompatActivity() {
         flQueueMusic = findViewById(R.id.flQueueMusic)
 
         //Timestamp
-        txtStartTimestamp = findViewById(R.id.txtStartTimestamp)
+        txtCurrentTimestamp = findViewById(R.id.txtCurrentTimestamp)
         txtEndTimestamp = findViewById(R.id.txtEndTimestamp)
 
         //Song And Singer Name
@@ -104,6 +115,7 @@ class FullPlayerActivity : AppCompatActivity() {
         changeRotationStatus()
         changePlayPauseIcon()
         changeSeekBarStatus()
+        changeTimestampStatus()
     }
 
     override fun onStop() {
@@ -124,6 +136,14 @@ class FullPlayerActivity : AppCompatActivity() {
             runUpdateSeekBar()
         } else {
             stopUpdateSeekBar()
+        }
+    }
+
+    private fun changeTimestampStatus() {
+        if (mediaPlayer?.isPlaying == true) {
+            runUpdateTimestamp()
+        } else {
+            stopUpdateTimestamp()
         }
     }
 
@@ -156,6 +176,9 @@ class FullPlayerActivity : AppCompatActivity() {
 
             rotationView?.pause()
             MiniPlayerFragment.fractionValue = rotationView?.getAnimatedFraction()
+
+            sbSeekBar?.progress = 0
+            txtCurrentTimestamp?.text = getTimestamp(0)
         }
     }
 
@@ -182,7 +205,16 @@ class FullPlayerActivity : AppCompatActivity() {
         seekBarHandler.removeCallbacks(seekBarRunnable)
     }
 
+    private fun runUpdateTimestamp() {
+        timestampRunnable.run()
+    }
+
+    private fun stopUpdateTimestamp() {
+        timestampHandler.removeCallbacks(timestampRunnable)
+    }
+
     private fun getTimestamp(duration: Int): String {
+        //Format: 01:01
         Log.d("getTimestamp", duration.toString())
 
         val minute = duration / 60
@@ -227,6 +259,7 @@ class FullPlayerActivity : AppCompatActivity() {
         flPlayPause?.setOnClickListener(View.OnClickListener {
             changeMusicStatus()
             changeSeekBarStatus()
+            changeTimestampStatus()
             changeRotationStatus()
             changePlayPauseIcon()
         })

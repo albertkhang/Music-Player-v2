@@ -223,7 +223,7 @@
         android:progressTint="@color/colorLightSeekBar"/>
 
     <TextView
-        android:id="@+id/txtStartTimestamp"
+        android:id="@+id/txtCurrentTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
