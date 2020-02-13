@@ -49,9 +49,9 @@
 
     <!--    RecyclerView-->
     <dimen name="dimenSongsRecyclerViewMarginTop">16dp</dimen>
-    <dimen name="dimenSongsRecyclerViewMarginSlide">16dp</dimen>
+    <dimen name="dimenSongsRecyclerViewMarginSlide">8dp</dimen>
 
     <!--    Song Item-->
-    <dimen name="dimenSongsItemHeight">82dp</dimen>
-    <dimen name="dimenSongsItemMarginBottom">12dp</dimen>
+    <dimen name="dimenSongsItemHeight">70dp</dimen>
+    <dimen name="dimenSongsItemMarginBottom">10dp</dimen>
 </resources>
