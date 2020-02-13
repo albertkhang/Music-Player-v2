@@ -94,6 +94,8 @@ class MiniPlayerFragment : Fragment() {
         addEvent()
     }
 
+    //TODO: block press mini player until download song complete
+
     private fun addControl() {
         flMiniPlayer = view?.findViewById(R.id.flMiniPlayer)
 
