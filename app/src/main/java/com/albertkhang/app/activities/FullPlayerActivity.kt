@@ -195,7 +195,10 @@ class FullPlayerActivity : AppCompatActivity() {
 //        txtEndTimestamp?.text = getTimestamp(intent.getIntExtra("duration", 0))
 
         txtEndTimestamp?.text = getTimestamp(mediaPlayer!!.duration / 1000)
+        txtCurrentTimestamp?.text = getTimestamp(mediaPlayer!!.currentPosition / 1000)
+
         sbSeekBar?.max = mediaPlayer!!.duration
+        sbSeekBar?.progress = mediaPlayer!!.currentPosition
     }
 
     private fun runUpdateSeekBar() {
@@ -270,7 +273,8 @@ class FullPlayerActivity : AppCompatActivity() {
         })
 
         flFavorite?.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show()
+            Log.d("FullPlayerActivity", "flFavorite")
+            
         })
     }
 

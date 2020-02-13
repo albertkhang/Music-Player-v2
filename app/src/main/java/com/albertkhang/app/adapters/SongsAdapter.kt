@@ -1,7 +1,7 @@
 package com.albertkhang.app.adapters
 
 import android.content.Context
-import android.content.DialogInterface
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +9,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.albertkhang.app.R
 import com.albertkhang.app.utils.Song
 import com.bumptech.glide.Glide
+
 
 class SongsAdapter(val context: Context) :
     RecyclerView.Adapter<SongsAdapter.ViewHolder>() {
@@ -59,6 +62,12 @@ class SongsAdapter(val context: Context) :
         Log.d("songsAdapter", songs[position].singers())
 
         changeFavoriteIcon(holder, position)
+        holder.flFavorite.setOnClickListener { view ->
+            run {
+                songs[position].isFavorite = !songs[position].isFavorite
+                changeFavoriteIcon(holder, position)
+            }
+        }
 
         holder.itemView.setOnClickListener { view ->
             onItemClickListener?.onItemClickListener(
@@ -71,11 +80,21 @@ class SongsAdapter(val context: Context) :
     }
 
     private fun changeFavoriteIcon(holder: ViewHolder, position: Int) {
+        holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border)
+
         if (songs[position].isFavorite) {
             holder.imgFavorite.setImageResource(R.drawable.ic_favorite)
-        } else {
-            holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border)
+//            holder.imgFavorite.setImageDrawable(getFavoriteChangedDrawable())
         }
+    }
+
+    private fun getFavoriteChangedDrawable(): Drawable {
+        val unwrappedDrawable =
+            AppCompatResources.getDrawable(context, R.drawable.ic_favorite)
+        val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
+        DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.colorMain))
+
+        return wrappedDrawable
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -86,6 +105,8 @@ class SongsAdapter(val context: Context) :
         val txtSongName: TextView = itemView.findViewById(R.id.txtSongName)
         val txtSingerName: TextView = itemView.findViewById(R.id.txtSingerName)
 
+
+        val flFavorite: FrameLayout = itemView.findViewById(R.id.flFavorite)
         val imgFavorite: ImageView = itemView.findViewById(R.id.imgFavorite)
         val imgMore: ImageView = itemView.findViewById(R.id.imgMore)
     }
