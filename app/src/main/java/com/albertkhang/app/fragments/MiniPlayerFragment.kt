@@ -230,6 +230,7 @@ class MiniPlayerFragment : Fragment() {
                 }
                 setCompletionMediaPlayerListener()
                 setDefaultRotationCover()
+                changeFavoriteStatus()
             }
         }
     }
