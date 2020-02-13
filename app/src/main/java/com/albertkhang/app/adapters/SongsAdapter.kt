@@ -88,15 +88,6 @@ class SongsAdapter(val context: Context) :
         }
     }
 
-    private fun getFavoriteChangedDrawable(): Drawable {
-        val unwrappedDrawable =
-            AppCompatResources.getDrawable(context, R.drawable.ic_favorite)
-        val wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable!!)
-        DrawableCompat.setTint(wrappedDrawable, context.resources.getColor(R.color.colorMain))
-
-        return wrappedDrawable
-    }
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val flSongItem: FrameLayout = itemView.findViewById(R.id.flSongItem)
 

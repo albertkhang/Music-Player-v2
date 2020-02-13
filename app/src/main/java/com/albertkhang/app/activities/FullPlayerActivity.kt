@@ -1,5 +1,6 @@
 package com.albertkhang.app.activities
 
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -7,9 +8,12 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.DrawableCompat
 import com.albertkhang.app.R
 import com.albertkhang.app.animations.RotationView
 import com.albertkhang.app.fragments.MiniPlayerFragment
+import com.albertkhang.app.utils.ActiveImage
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -61,6 +65,7 @@ class FullPlayerActivity : AppCompatActivity() {
     private var flForward: FrameLayout? = null
 
     private var flRepeat: FrameLayout? = null
+    private var imgRepeat: ImageView? = null
     private var flFavorite: FrameLayout? = null
 
     private var mediaPlayer: MediaPlayer? = null
@@ -99,6 +104,7 @@ class FullPlayerActivity : AppCompatActivity() {
         flForward = findViewById(R.id.flForward)
 
         flRepeat = findViewById(R.id.flRepeat)
+        imgRepeat = findViewById(R.id.imgRepeat)
         flFavorite = findViewById(R.id.flFavorite)
 
         mediaPlayer = MiniPlayerFragment.mediaPlayer
@@ -116,6 +122,48 @@ class FullPlayerActivity : AppCompatActivity() {
         changePlayPauseIcon()
         changeSeekBarStatus()
         changeTimestampStatus()
+    }
+
+    private fun setOnClick() {
+        flDownArrow?.setOnClickListener(View.OnClickListener {
+            finish()
+        })
+
+        flQueueMusic?.setOnClickListener(View.OnClickListener {
+            Toast.makeText(this, "Queue Music", Toast.LENGTH_SHORT).show()
+        })
+
+        flRepeat?.setOnClickListener(View.OnClickListener {
+            Log.d("FullPlayerActivity", "flRepeat")
+
+            if (mediaPlayer?.isLooping == false) {
+                mediaPlayer?.isLooping = true
+                imgRepeat?.setImageDrawable(ActiveImage(this).activeRepeatDrawable())
+            } else {
+                mediaPlayer?.isLooping = false
+                imgRepeat?.setImageDrawable(ActiveImage(this).inactiveRepeatDrawable())
+            }
+        })
+
+        flRewind?.setOnClickListener(View.OnClickListener {
+            Toast.makeText(this, "Rewind", Toast.LENGTH_SHORT).show()
+        })
+
+        flPlayPause?.setOnClickListener(View.OnClickListener {
+            changeMusicStatus()
+            changeSeekBarStatus()
+            changeTimestampStatus()
+            changeRotationStatus()
+            changePlayPauseIcon()
+        })
+
+        flForward?.setOnClickListener(View.OnClickListener {
+            Toast.makeText(this, "Forward", Toast.LENGTH_SHORT).show()
+        })
+
+        flFavorite?.setOnClickListener(View.OnClickListener {
+            Log.d("FullPlayerActivity", "flFavorite")
+        })
     }
 
     override fun onStop() {
@@ -241,40 +289,6 @@ class FullPlayerActivity : AppCompatActivity() {
         }
 
         return result
-    }
-
-    private fun setOnClick() {
-        flDownArrow?.setOnClickListener(View.OnClickListener {
-            finish()
-        })
-
-        flQueueMusic?.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Queue Music", Toast.LENGTH_SHORT).show()
-        })
-
-        flRepeat?.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Repeat", Toast.LENGTH_SHORT).show()
-        })
-
-        flRewind?.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Rewind", Toast.LENGTH_SHORT).show()
-        })
-
-        flPlayPause?.setOnClickListener(View.OnClickListener {
-            changeMusicStatus()
-            changeSeekBarStatus()
-            changeTimestampStatus()
-            changeRotationStatus()
-            changePlayPauseIcon()
-        })
-
-        flForward?.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Forward", Toast.LENGTH_SHORT).show()
-        })
-
-        flFavorite?.setOnClickListener(View.OnClickListener {
-            Log.d("FullPlayerActivity", "flFavorite")
-        })
     }
 
     private fun setCover(url: String) {
