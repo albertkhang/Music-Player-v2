@@ -283,8 +283,8 @@ class FullPlayerActivity : AppCompatActivity() {
     }
 
     private fun makeBlurCoverBackground(url: String) {
-        val radius = resources.getInteger(R.integer.dimenFullPlayerCoverBackgroundRadius)
-        val sampling = resources.getInteger(R.integer.dimenFullPlayerCoverBackgroundSampling)
+        val radius = resources.getInteger(R.integer.integerFullPlayerCoverBackgroundRadius)
+        val sampling = resources.getInteger(R.integer.integerFullPlayerCoverBackgroundSampling)
 
         imgCoverBackground?.let {
             Glide.with(this)
