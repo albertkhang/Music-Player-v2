@@ -21,6 +21,7 @@ import com.albertkhang.app.activities.FullPlayerActivity
 import com.albertkhang.app.animations.RotationView
 import com.albertkhang.app.networks.SongsService
 import com.albertkhang.app.networks.api_song_url
+import com.albertkhang.app.utils.ActiveImage
 import com.albertkhang.app.utils.Song
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
@@ -64,6 +65,7 @@ class MiniPlayerFragment : Fragment() {
         var mediaPlayer: MediaPlayer? = null
         var rotationView: RotationView? = null
         var fractionValue: Float? = null
+        var currentSong: Song? = null
 
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
@@ -80,14 +82,11 @@ class MiniPlayerFragment : Fragment() {
     private var imgCover: CircleImageView? = null
 
     private var imgFavorite: ImageView? = null
-    private var isFavoriteClicked = false
 
     private var imgPlayPause: ImageView? = null
 
     private var txtSongName: TextView? = null
     private var txtSingerName: TextView? = null
-
-    private var currentSong: Song? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         addControl()
@@ -116,14 +115,15 @@ class MiniPlayerFragment : Fragment() {
         })
 
         flFavorite.setOnClickListener(View.OnClickListener {
-            changeFavoriteIcon()
+            currentSong?.isFavorite = currentSong?.isFavorite != true
+            changeFavoriteStatus()
         })
 
         imgPlayPause?.setOnClickListener(View.OnClickListener {
             if (mediaPlayer != null) {
                 changeMusicStatus()
                 changeCoverStatus()
-                changePlayPauseIcon()
+                changePlayPauseStatus()
             } else {
                 Toast.makeText(view?.context, "Please select a song!", Toast.LENGTH_SHORT).show()
             }
@@ -166,7 +166,7 @@ class MiniPlayerFragment : Fragment() {
         }
     }
 
-    private fun changePlayPauseIcon() {
+    private fun changePlayPauseStatus() {
         if (mediaPlayer?.isPlaying == true) {
             imgPlayPause?.setImageResource(R.drawable.ic_pause)
         } else {
@@ -174,14 +174,11 @@ class MiniPlayerFragment : Fragment() {
         }
     }
 
-    private fun changeFavoriteIcon() {
-        if (!isFavoriteClicked) {
-            //change into clicked icon
-            imgFavorite?.setImageResource(R.drawable.ic_favorite)
-            isFavoriteClicked = true
+    private fun changeFavoriteStatus() {
+        if (currentSong?.isFavorite == true) {
+            imgFavorite?.setImageDrawable(ActiveImage(view!!.context).activeFavoriteDrawable())
         } else {
-            imgFavorite?.setImageResource(R.drawable.ic_favorite_border)
-            isFavoriteClicked = false
+            imgFavorite?.setImageDrawable(ActiveImage(view!!.context).inactiveFavoriteDrawable())
         }
     }
 
@@ -218,7 +215,7 @@ class MiniPlayerFragment : Fragment() {
                     mediaPlayer?.stop()
                     mediaPlayer = null
                     rotationView?.end()
-                    changePlayPauseIcon()
+                    changePlayPauseStatus()
                     resetDefaultRotateCover()
                 }
 
@@ -329,8 +326,9 @@ class MiniPlayerFragment : Fragment() {
     }
 
     private fun updateUIStatusWhenBack() {
-        changePlayPauseIcon()
+        changePlayPauseStatus()
         changeCoverStatus()
+        changeFavoriteStatus()
         updateCoverFraction()
     }
 

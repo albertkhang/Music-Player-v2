@@ -1,6 +1,5 @@
 package com.albertkhang.app.activities
 
-import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -8,12 +7,11 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.DrawableCompat
 import com.albertkhang.app.R
 import com.albertkhang.app.animations.RotationView
 import com.albertkhang.app.fragments.MiniPlayerFragment
 import com.albertkhang.app.utils.ActiveImage
+import com.albertkhang.app.utils.Song
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -67,9 +65,12 @@ class FullPlayerActivity : AppCompatActivity() {
     private var flRepeat: FrameLayout? = null
     private var imgRepeat: ImageView? = null
     private var flFavorite: FrameLayout? = null
+    private var imgFavorite: ImageView? = null
 
     private var mediaPlayer: MediaPlayer? = null
     private var rotationView: RotationView? = null
+
+    private var currentSong: Song? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,15 +107,19 @@ class FullPlayerActivity : AppCompatActivity() {
         flRepeat = findViewById(R.id.flRepeat)
         imgRepeat = findViewById(R.id.imgRepeat)
         flFavorite = findViewById(R.id.flFavorite)
+        imgFavorite = findViewById(R.id.imgFavorite)
 
         mediaPlayer = MiniPlayerFragment.mediaPlayer
         rotationView = RotationView()
         rotationView?.view = imgCover
         updateRotationStatus()
+
+        currentSong = MiniPlayerFragment.currentSong
     }
 
     private fun addEvent() {
-        getIntentData()
+//        getIntentData()
+        setCurrentSong()
         setOnClick()
 
         setCompletionMediaPlayerListener()
@@ -136,13 +141,8 @@ class FullPlayerActivity : AppCompatActivity() {
         flRepeat?.setOnClickListener(View.OnClickListener {
             Log.d("FullPlayerActivity", "flRepeat")
 
-            if (mediaPlayer?.isLooping == false) {
-                mediaPlayer?.isLooping = true
-                imgRepeat?.setImageDrawable(ActiveImage(this).activeRepeatDrawable())
-            } else {
-                mediaPlayer?.isLooping = false
-                imgRepeat?.setImageDrawable(ActiveImage(this).inactiveRepeatDrawable())
-            }
+            mediaPlayer?.isLooping = mediaPlayer?.isLooping == false
+            changeRepeatStatus()
         })
 
         flRewind?.setOnClickListener(View.OnClickListener {
@@ -163,7 +163,31 @@ class FullPlayerActivity : AppCompatActivity() {
 
         flFavorite?.setOnClickListener(View.OnClickListener {
             Log.d("FullPlayerActivity", "flFavorite")
+            currentSong?.isFavorite = currentSong?.isFavorite != true
+            changeFavoriteStatus()
         })
+    }
+
+    private fun setCurrentSong() {
+        txtSongName?.setText(currentSong?.songName)
+        txtSingerName?.setText(currentSong?.singers())
+
+        val cover_url = currentSong?.album?.cover_url
+        if (cover_url != null) {
+            setCover(cover_url)
+            makeBlurCoverBackground(cover_url)
+        }
+//        Using below line if music url is full song
+//        txtEndTimestamp?.text = getTimestamp(intent.getIntExtra("duration", 0))
+
+        txtEndTimestamp?.text = getTimestamp(mediaPlayer!!.duration / 1000)
+        txtCurrentTimestamp?.text = getTimestamp(mediaPlayer!!.currentPosition / 1000)
+
+        sbSeekBar?.max = mediaPlayer!!.duration
+        sbSeekBar?.progress = mediaPlayer!!.currentPosition
+
+        changeRepeatStatus()
+        changeFavoriteStatus()
     }
 
     override fun onStop() {
@@ -218,6 +242,22 @@ class FullPlayerActivity : AppCompatActivity() {
         }
     }
 
+    private fun changeRepeatStatus() {
+        if (mediaPlayer?.isLooping == true) {
+            imgRepeat?.setImageDrawable(ActiveImage(this).activeRepeatDrawable())
+        } else {
+            imgRepeat?.setImageDrawable(ActiveImage(this).inactiveRepeatDrawable())
+        }
+    }
+
+    private fun changeFavoriteStatus() {
+        if (currentSong?.isFavorite == true) {
+            imgFavorite?.setImageDrawable(ActiveImage(this).activeFavoriteDrawable())
+        } else {
+            imgFavorite?.setImageDrawable(ActiveImage(this).inactiveFavoriteDrawable())
+        }
+    }
+
     private fun setCompletionMediaPlayerListener() {
         mediaPlayer?.setOnCompletionListener {
             imgPlayPause?.setImageResource(R.drawable.ic_play)
@@ -229,24 +269,6 @@ class FullPlayerActivity : AppCompatActivity() {
             sbSeekBar?.progress = 0
             txtCurrentTimestamp?.text = getTimestamp(0)
         }
-    }
-
-    private fun getIntentData() {
-        txtSongName?.setText(intent.getStringExtra("songName"))
-        txtSingerName?.setText(intent.getStringExtra("singerName"))
-
-        val cover_url = intent.getStringExtra("cover_url")
-        setCover(cover_url)
-        makeBlurCoverBackground(cover_url)
-
-//        Using below line if music url is full song
-//        txtEndTimestamp?.text = getTimestamp(intent.getIntExtra("duration", 0))
-
-        txtEndTimestamp?.text = getTimestamp(mediaPlayer!!.duration / 1000)
-        txtCurrentTimestamp?.text = getTimestamp(mediaPlayer!!.currentPosition / 1000)
-
-        sbSeekBar?.max = mediaPlayer!!.duration
-        sbSeekBar?.progress = mediaPlayer!!.currentPosition
     }
 
     private fun runUpdateSeekBar() {

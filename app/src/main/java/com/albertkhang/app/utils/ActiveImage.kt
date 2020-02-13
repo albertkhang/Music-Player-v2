@@ -15,6 +15,14 @@ class ActiveImage constructor(private val context: Context) {
         return getInactiveIconDrawable(R.drawable.ic_repeat)
     }
 
+    fun activeFavoriteDrawable(): Drawable {
+        return getActiveIconDrawable(R.drawable.ic_favorite)
+    }
+
+    fun inactiveFavoriteDrawable(): Drawable {
+        return getInactiveIconDrawable(R.drawable.ic_favorite_border)
+    }
+
     private fun getActiveIconDrawable(iconId: Int): Drawable {
         val drawable =
             AppCompatResources.getDrawable(context, iconId)

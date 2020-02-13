@@ -196,6 +196,7 @@
             app:layout_constraintLeft_toRightOf="@id/llPlaybackFrame">
 
             <ImageView
+                android:id="@+id/imgFavorite"
                 android:layout_width="@dimen/dimenFullPlayerIconSmallSize"
                 android:layout_height="@dimen/dimenFullPlayerIconSmallSize"
 
