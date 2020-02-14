@@ -28,17 +28,6 @@ class FullPlayerActivity : AppCompatActivity() {
     //Timestamp
     private var txtCurrentTimestamp: TextView? = null
     private var txtEndTimestamp: TextView? = null
-    private val timestampHandler = Handler()
-    private val timestampRunnable = object : Runnable {
-        override fun run() {
-            if (mediaPlayer?.isPlaying == true) {
-                val timestamp = mediaPlayer?.currentPosition?.div(1000)
-                txtCurrentTimestamp?.text = getTimestamp(timestamp!!)
-
-                timestampHandler.postDelayed(this, 1000)
-            }
-        }
-    }
 
     //Song And Singer Name
     private var txtSongName: TextView? = null
@@ -118,15 +107,41 @@ class FullPlayerActivity : AppCompatActivity() {
     }
 
     private fun addEvent() {
-//        getIntentData()
         setCurrentSong()
         setOnClick()
+        sbSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                Log.d("sbSeekBar", "onProgressChanged")
+                Log.d("sbSeekBar", "p1: $p1")
+
+                txtCurrentTimestamp?.text = getTimestamp(p1 / 1000)
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+                Log.d("sbSeekBar", "onStartTrackingTouch")
+                mediaPlayer?.pause()
+
+                stopUpdateSeekBar()
+                changePlayPauseIcon()
+                changeRotationStatus()
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+                Log.d("sbSeekBar", "onStopTrackingTouch ")
+                mediaPlayer?.seekTo(p0!!.progress)
+                mediaPlayer?.start()
+
+                runUpdateSeekBar()
+                changePlayPauseIcon()
+                changeRotationStatus()
+            }
+
+        })
 
         setCompletionMediaPlayerListener()
         changeRotationStatus()
         changePlayPauseIcon()
         changeSeekBarStatus()
-        changeTimestampStatus()
     }
 
     private fun setOnClick() {
@@ -152,7 +167,6 @@ class FullPlayerActivity : AppCompatActivity() {
         flPlayPause?.setOnClickListener(View.OnClickListener {
             changeMusicStatus()
             changeSeekBarStatus()
-            changeTimestampStatus()
             changeRotationStatus()
             changePlayPauseIcon()
         })
@@ -208,14 +222,6 @@ class FullPlayerActivity : AppCompatActivity() {
             runUpdateSeekBar()
         } else {
             stopUpdateSeekBar()
-        }
-    }
-
-    private fun changeTimestampStatus() {
-        if (mediaPlayer?.isPlaying == true) {
-            runUpdateTimestamp()
-        } else {
-            stopUpdateTimestamp()
         }
     }
 
@@ -277,14 +283,6 @@ class FullPlayerActivity : AppCompatActivity() {
 
     private fun stopUpdateSeekBar() {
         seekBarHandler.removeCallbacks(seekBarRunnable)
-    }
-
-    private fun runUpdateTimestamp() {
-        timestampRunnable.run()
-    }
-
-    private fun stopUpdateTimestamp() {
-        timestampHandler.removeCallbacks(timestampRunnable)
     }
 
     private fun getTimestamp(duration: Int): String {
