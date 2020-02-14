@@ -1,7 +1,6 @@
 package com.albertkhang.app.adapters
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +8,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.albertkhang.app.R
+import com.albertkhang.app.fragments.MiniPlayerFragment
+import com.albertkhang.app.utils.ActiveImage
 import com.albertkhang.app.utils.Song
 import com.bumptech.glide.Glide
+import org.greenrobot.eventbus.EventBus
 
 
 class SongsAdapter(val context: Context) :
@@ -36,6 +36,16 @@ class SongsAdapter(val context: Context) :
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         this.onItemClickListener = onItemClickListener
     }
+
+//    interface OnFavoriteItemClickListener {
+//        fun onFavoriteItemClickListener(view: View, position: Int)
+//    }
+//
+//    private var onFavoriteItemClickListener: OnFavoriteItemClickListener? = null
+//
+//    fun setOnFavoriteItemClickListener(onFavoriteItemClickListener: OnFavoriteItemClickListener) {
+//        this.onFavoriteItemClickListener = onFavoriteItemClickListener
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -66,6 +76,8 @@ class SongsAdapter(val context: Context) :
             run {
                 songs[position].isFavorite = !songs[position].isFavorite
                 changeFavoriteIcon(holder, position)
+
+                EventBus.getDefault().post(MiniPlayerFragment.cmdUpdateFavoriteStatus)
             }
         }
 
@@ -80,11 +92,10 @@ class SongsAdapter(val context: Context) :
     }
 
     private fun changeFavoriteIcon(holder: ViewHolder, position: Int) {
-        holder.imgFavorite.setImageResource(R.drawable.ic_favorite_border)
+        holder.imgFavorite.setImageDrawable(ActiveImage(context).inactiveFavoriteDrawable())
 
         if (songs[position].isFavorite) {
-            holder.imgFavorite.setImageResource(R.drawable.ic_favorite)
-//            holder.imgFavorite.setImageDrawable(getFavoriteChangedDrawable())
+            holder.imgFavorite.setImageDrawable(ActiveImage(context).activeFavoriteDrawable())
         }
     }
 
@@ -100,5 +111,13 @@ class SongsAdapter(val context: Context) :
         val flFavorite: FrameLayout = itemView.findViewById(R.id.flFavorite)
         val imgFavorite: ImageView = itemView.findViewById(R.id.imgFavorite)
         val imgMore: ImageView = itemView.findViewById(R.id.imgMore)
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
     }
 }

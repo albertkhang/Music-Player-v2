@@ -66,6 +66,8 @@ class MiniPlayerFragment : Fragment() {
         var rotationView: RotationView? = null
         var fractionValue: Float? = null
         var currentSong: Song? = null
+        const val cmdUpdateSong: String = "updateSong"
+        const val cmdUpdateFavoriteStatus: String = "updateFavoriteStatus"
 
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
@@ -195,17 +197,15 @@ class MiniPlayerFragment : Fragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(data: Any) {
-        when (data) {
-            is Song -> {
-                currentSong = data.copy()
-
-                txtSongName?.setText(data.songName)
-                txtSingerName?.setText(data.singers())
+    fun onEvent(cmd: String) {
+        when (cmd) {
+            cmdUpdateSong -> {
+                txtSongName?.text = currentSong?.songName
+                txtSingerName?.text = currentSong?.singers()
 
                 imgCover?.let {
                     Glide.with(this)
-                        .load(data.album.cover_url)
+                        .load(currentSong?.album?.cover_url)
                         .into(it)
                 }
 
@@ -230,6 +230,10 @@ class MiniPlayerFragment : Fragment() {
                 }
                 setCompletionMediaPlayerListener()
                 setDefaultRotationCover()
+                changeFavoriteStatus()
+            }
+
+            cmdUpdateFavoriteStatus -> {
                 changeFavoriteStatus()
             }
         }

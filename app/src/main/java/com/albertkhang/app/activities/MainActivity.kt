@@ -62,9 +62,9 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
         getSongsData()
         songsAdapter?.setOnItemClickListener(object : SongsAdapter.OnItemClickListener {
             override fun onItemClickListener(view: View, position: Int) {
-                EventBus.getDefault().post(songList?.get(position))
+                MiniPlayerFragment.currentSong = songList?.get(position)
+                EventBus.getDefault().post(MiniPlayerFragment.cmdUpdateSong)
             }
-
         })
     }
 
