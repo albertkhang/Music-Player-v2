@@ -19,6 +19,8 @@ import com.albertkhang.app.utils.Songs
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,6 +43,16 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
 
         addControl()
         addEvent()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
     }
 
     private fun addControl() {
@@ -66,6 +78,22 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
                 EventBus.getDefault().post(MiniPlayerFragment.cmdUpdateSong)
             }
         })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(cmd: String) {
+        when (cmd) {
+            MiniPlayerFragment.cmdUpdateFavoriteItemStatus -> {
+                Log.d("onEvent", "cmdUpdateFavoriteItemStatus")
+
+                for (i in songList!!.indices) {
+                    if (songList!![i] == MiniPlayerFragment.currentSong) {
+                        songsAdapter?.updateFavoriteStatusAtPosition(i)
+                        break
+                    }
+                }
+            }
+        }
     }
 
     private fun requestPermission() {

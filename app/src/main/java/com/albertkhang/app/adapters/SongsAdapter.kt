@@ -15,7 +15,8 @@ import com.albertkhang.app.utils.ActiveImage
 import com.albertkhang.app.utils.Song
 import com.bumptech.glide.Glide
 import org.greenrobot.eventbus.EventBus
-
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class SongsAdapter(val context: Context) :
     RecyclerView.Adapter<SongsAdapter.ViewHolder>() {
@@ -27,6 +28,10 @@ class SongsAdapter(val context: Context) :
         notifyDataSetChanged()
     }
 
+    fun updateFavoriteStatusAtPosition(position: Int) {
+        notifyItemChanged(position)
+    }
+
     interface OnItemClickListener {
         fun onItemClickListener(view: View, position: Int)
     }
@@ -36,16 +41,6 @@ class SongsAdapter(val context: Context) :
     fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         this.onItemClickListener = onItemClickListener
     }
-
-//    interface OnFavoriteItemClickListener {
-//        fun onFavoriteItemClickListener(view: View, position: Int)
-//    }
-//
-//    private var onFavoriteItemClickListener: OnFavoriteItemClickListener? = null
-//
-//    fun setOnFavoriteItemClickListener(onFavoriteItemClickListener: OnFavoriteItemClickListener) {
-//        this.onFavoriteItemClickListener = onFavoriteItemClickListener
-//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -111,13 +106,5 @@ class SongsAdapter(val context: Context) :
         val flFavorite: FrameLayout = itemView.findViewById(R.id.flFavorite)
         val imgFavorite: ImageView = itemView.findViewById(R.id.imgFavorite)
         val imgMore: ImageView = itemView.findViewById(R.id.imgMore)
-    }
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-    }
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
     }
 }

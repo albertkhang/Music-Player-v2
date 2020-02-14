@@ -68,6 +68,7 @@ class MiniPlayerFragment : Fragment() {
         var currentSong: Song? = null
         const val cmdUpdateSong: String = "updateSong"
         const val cmdUpdateFavoriteStatus: String = "updateFavoriteStatus"
+        const val cmdUpdateFavoriteItemStatus: String = "updateFavoriteItemStatus"
 
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
@@ -119,6 +120,8 @@ class MiniPlayerFragment : Fragment() {
         flFavorite.setOnClickListener(View.OnClickListener {
             currentSong?.isFavorite = currentSong?.isFavorite != true
             changeFavoriteStatus()
+
+            EventBus.getDefault().post(cmdUpdateFavoriteItemStatus)
         })
 
         imgPlayPause?.setOnClickListener(View.OnClickListener {
