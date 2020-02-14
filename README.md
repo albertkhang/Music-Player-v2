@@ -14,3 +14,13 @@
 **Icon**: [Preepik](https://www.freepik.com/free-vector/red-logo-play_1050323.htm#page=1&query=music%20player%20logo&position=2)
 
 **API**: [Deezer](https://developers.deezer.com/api)
+
+## Libraries
+> Libraries used in this project
+
+1. [CircleImageView](https://github.com/hdodenhof/CircleImageView)
+2. [EventBus](https://github.com/greenrobot/EventBus)
+3. [Glide](https://github.com/bumptech/glide)
+4. [Glide Transformations](https://github.com/wasabeef/glide-transformations)
+5. [Retrofit](https://github.com/square/retrofit)
+6. [TedPermission](https://github.com/ParkSangGwon/TedPermission)
