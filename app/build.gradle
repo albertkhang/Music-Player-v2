@@ -25,7 +25,6 @@ android {
 
 dependencies {
     implementation 'gun0912.ted:tedpermission:2.2.3'
-    implementation 'com.mindorks.android:prdownloader:0.6.0'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
