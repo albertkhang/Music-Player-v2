@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+
+    <color name="colorMain">#46E1FF</color>
+
+    <!--    Text-->
+    <color name="colorSongName">#DBDAE8</color>
+    <color name="colorTitle">#DBDAE8</color>
+    <color name="colorSingerName">#87879F</color>
+    <color name="colorTimestamps">#999EA1</color>
+
+    <!--    Background-->
+    <color name="colorMiniPlayerBackground">#1B212E</color>
+    <color name="colorSongItemBackground">#262D3B</color>
+
+    <!--    Icon-->
+    <color name="colorIcon">#E9E9EB</color>
+
+    <!--    Ripple-->
+    <color name="colorRipple">#323843</color>
+
+    <!--    SeekBar-->
+    <color name="colorLightSeekBar">#E9E9EB</color>
+    <color name="colorDarkSeekBar">#55595D</color>
+</resources>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.albertkhang.app.views.RoundedCornerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimenSongsItemHeight"
+    android:background="@color/colorSongItemBackground"
+    android:layout_marginBottom="@dimen/dimenSongsItemMarginBottom">
+
+    <FrameLayout
+        android:id="@+id/flSongItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        style="@style/RippleViewBackground"
+        android:clickable="true"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <ImageView
+        android:id="@+id/imgCover"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+
+        app:layout_constraintDimensionRatio="1:1"
+        android:src="@drawable/ic_music_layer_default_cover"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/imgCover"
+        app:layout_constraintRight_toLeftOf="@id/flFavorite"
+
+        android:layout_marginLeft="@dimen/dimenMiniPlayerFrameSongSingerMarginLeft"
+        android:layout_marginRight="@dimen/dimenMiniPlayerFrameSongSingerMarginRight">
+
+        <TextView
+            android:id="@+id/txtSongName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/stringSongName"
+            android:maxLines="@integer/integerMaxLinesSongName"
+            android:ellipsize="end"
+            android:textColor="@color/colorSongName"
+            android:textSize="@dimen/dimenMiniPlayerSongNameSize"/>
+
+        <TextView
+            android:id="@+id/txtSingerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/stringSingerName"
+            android:maxLines="@integer/integerMaxLinesSingerName"
+            android:ellipsize="end"
+            android:textColor="@color/colorSingerName"
+            android:textSize="@dimen/dimenMiniPlayerSingerNameSize"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/flMore"
+        android:layout_width="42dp"
+        android:layout_height="match_parent"
+
+        style="@style/RippleViewBackground"
+        android:clickable="true"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:id="@+id/imgMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/ic_more"
+            android:layout_gravity="center_vertical"
+
+            android:layout_marginStart="6dp"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/flFavorite"
+        android:layout_width="42dp"
+        android:layout_height="match_parent"
+
+        style="@style/RippleViewBackground"
+        android:clickable="true"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/flMore">
+
+        <ImageView
+            android:id="@+id/imgFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/ic_favorite_border"
+
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"/>
+    </FrameLayout>
+</com.albertkhang.app.views.RoundedCornerLayout>
