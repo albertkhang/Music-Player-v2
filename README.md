@@ -24,3 +24,8 @@
 4. [Glide Transformations](https://github.com/wasabeef/glide-transformations)
 5. [Retrofit](https://github.com/square/retrofit)
 6. [TedPermission](https://github.com/ParkSangGwon/TedPermission)
+
+## Screens
+> Sceens in app
+
+![Screen](https://github.com/albertkhang/Music-Player-v2/blob/develop/app/src/main/res/raw/screens.png)
