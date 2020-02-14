@@ -48,6 +48,9 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
+        if (songsAdapter != null && songList != null) {
+            songsAdapter?.update(songList!!)
+        }
     }
 
     override fun onStop() {
