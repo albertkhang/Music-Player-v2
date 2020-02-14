@@ -28,10 +28,6 @@ class SongsAdapter(val context: Context) :
         notifyDataSetChanged()
     }
 
-    fun updateFavoriteStatusAtPosition(position: Int) {
-        notifyItemChanged(position)
-    }
-
     interface OnItemClickListener {
         fun onItemClickListener(view: View, position: Int)
     }

@@ -89,11 +89,8 @@ class MainActivity : AppCompatActivity(), MiniPlayerFragment.OnFragmentInteracti
             MiniPlayerFragment.cmdUpdateFavoriteItemStatus -> {
                 Log.d("onEvent", "cmdUpdateFavoriteItemStatus")
 
-                for (i in songList!!.indices) {
-                    if (songList!![i] == MiniPlayerFragment.currentSong) {
-                        songsAdapter?.updateFavoriteStatusAtPosition(i)
-                        break
-                    }
+                if (songList !== null) {
+                    songsAdapter?.update(songList!!)
                 }
             }
         }
