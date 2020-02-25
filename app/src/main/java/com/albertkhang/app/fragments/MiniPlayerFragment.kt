@@ -277,14 +277,23 @@ class MiniPlayerFragment : Fragment() {
                 Log.d("downloadThenStart", "$file")
 
                 val inputStream = response.body()?.byteStream()
+
                 val fileOutputStream = FileOutputStream(file)
 
                 var line = inputStream?.read()
 
+                var sum = 0
                 while (line != -1) {
-                    line?.let { fileOutputStream.write(it) }
+                    line?.let {
+                        fileOutputStream.write(it)
+                        sum += 1
+                    }
+//                    Log.d("downloadThenStart", line.toString())
+
                     line = inputStream?.read()
                 }
+
+                Log.d("downloadThenStart", "contentLength " + response.body()?.contentLength().toString() + " sum " + sum)
 
                 inputStream?.close()
                 fileOutputStream.close()
