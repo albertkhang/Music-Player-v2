@@ -381,4 +381,7 @@ class MiniPlayerFragment : Fragment() {
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(uri: Uri)
     }
+
+    //TODO: dừng các trình phát nhạc khác khai play
+    //TODO: nghiên cứu
 }
